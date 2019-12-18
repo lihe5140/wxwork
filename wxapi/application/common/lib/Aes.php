@@ -12,7 +12,6 @@ class Aes
 {
     private $key = null;
     private $iv = null;
-
     /**
      *
      * @param $key 		密钥

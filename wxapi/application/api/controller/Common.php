@@ -6,7 +6,6 @@ use think\Controller;
 use think\Db;
 use think\Request;
 use think\Validate;
-
 class Common extends Controller
 {
     protected $request; //用来处理客户端传递过来的参数
@@ -14,11 +13,12 @@ class Common extends Controller
     protected $params; //过滤后符合要求的参数
     //控制器下面方法所要接受参数的
     protected $rules = array(
-        'Login' =>array(
+        'Login' => array(
             'login' => array(
-                'code' =>['require', 'alphaDash', 'length' => 32],
-            ),
+                'code' => ['require', 'alphaDash', 'length' => 32],
+            )
         ),
+        
         'HandleWx' => array(
             'getwxlist' => array(
                 'num' => ['number'],
@@ -79,6 +79,8 @@ class Common extends Controller
         parent::_initialize();
         $this->req = Request::instance();
         // 验证参数,返回成功过滤后的参数数组
+        dump($this->req->header());
+
         $this->params = $this->checkParams($this->req->param(true));
     }
 
@@ -94,7 +96,6 @@ class Common extends Controller
         $rule = $this->rules[$this->req->controller()][$this->req->action()];
         //2. 验证参数并且返回错误
         $this->validater = new Validate($rule);
-
         if (!$this->validater->check($arr)) {
             return show_msg(0, $this->validater->getError(), '', 400);
         }

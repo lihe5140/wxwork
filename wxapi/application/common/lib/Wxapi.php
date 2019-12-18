@@ -7,12 +7,14 @@ use app\common\lib\Curl;
 class Wxapi
 {
 
-    private $access_token_api = null;
+    private $appid = null;
+    private $appsecret = null;
     
     public function __construct()
     {
         // 配置文件wxapi.php(application\extra\wxapi.php)中定义access_token_api
-        $this->access_token_api = config('wxapi.access_token_api');
+        $this->appid = config('wxapi.appid');
+        $this->appsecret = config('wxapi.appsecret');
     }
     /**
      * 获取access_token
@@ -21,15 +23,14 @@ class Wxapi
      * @param String $AppSecret
      * @return String
      */
-    public function GetToken($AppId, $AppSecret,$code)
+    public function GetOpenId($code)
     {
         // 接口地址
-        $url = $this->access_token_api . "&appid={$AppId}&secret={$AppSecret}";
+        $url="https://api.weixin.qq.com/sns/jscode2session?appid={$this->appid}&secret={$this->appsecret}&js_code={$code}&grant_type=authorization_code";
         $curl = new Curl();
         $returnData = $curl::curl_get_https($url);
-        $returnData = json_decode($returnData, true);
-        $access_token=$returnData['access_token'];
-        return  $access_token;
+        // $returnData = json_decode($returnData, true);
+        return  $returnData;
     }
     
     

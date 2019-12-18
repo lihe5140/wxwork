@@ -17,12 +17,13 @@ App({
   check_token(token) {
     console.log('执行了验证token操作')
     wx.request({
-      url: 'http://172.20.0.241:81/auth',
+      url: 'http://192.168.1.5:81/checktoken',
       method: 'post',
       header: {
-        token
+        token:TOKEN
       },
       success: (res) => {
+        console.log(res)
         if (!res.data.errCode) {
           console.log('token有效')
           this.globalData.token = token;
@@ -45,14 +46,15 @@ App({
         console.log(code);
         // 2.将code发送给服务器
         wx.request({
-          url: 'http://172.20.0.241:81/login',
+          url: 'http://192.168.1.5:81/login',
           method: 'post',
           data: {
             code
           },
           success: (res) => {
             // 1.取出token
-            const token = res.data.token;
+            console.log(res)
+            const token = res.data;
             // 2.将token保存在globalData中
             this.globalData.token = token;
             // 3.进行本地存储

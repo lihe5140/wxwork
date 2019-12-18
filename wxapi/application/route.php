@@ -11,7 +11,8 @@
 use think\Route;
 
 
-Route::post('login','api/login/login');
+Route::post('login/:code','api/login/login');
+Route::post('checktoken','api/login/checktoken');
 
 
 // 公众号
@@ -29,4 +30,3 @@ Route::delete('article', 'api/article/delete');
 
 // 留言
 Route::get('msg', 'api/message/getmsg');
-
