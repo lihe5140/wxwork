@@ -21,7 +21,7 @@ class Wxapi
      * @param String $AppSecret
      * @return String
      */
-    public function GetAccessToken($AppId, $AppSecret)
+    public function GetToken($AppId, $AppSecret,$code)
     {
         // 接口地址
         $url = $this->access_token_api . "&appid={$AppId}&secret={$AppSecret}";

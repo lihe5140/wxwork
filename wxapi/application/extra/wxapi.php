@@ -3,9 +3,8 @@
 
 
 return [
-    'access_token' => 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential', //密码加密
-    'aeskey' => 'XIOW8eRMmiPldX73', //aes加密的密钥  客户端和服务端一致 不能大于16位
-    'aesiv' => '0000000000000000', //aes加密的向量  客户端和服务端一致 16位
+    'AppId' => 'wx7ee6285fafc10a0a', //aes加密的密钥  客户端和服务端一致 不能大于16位
+    'AppSecret' => 'c45b368918c1ab4db24a8d2ff51102de', //aes加密的向量  客户端和服务端一致 16位
 
     //app_type配置数组
     'app_types' => [

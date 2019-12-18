@@ -10,6 +10,10 @@
 // +----------------------------------------------------------------------
 use think\Route;
 
+
+Route::post('login','api/login/login');
+
+
 // 公众号
 Route::get('handle/[:num]/[:page]', 'api/HandleWx/getwxlist');
 Route::post('handle', 'api/HandleWx/addwx');

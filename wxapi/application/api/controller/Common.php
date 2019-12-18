@@ -7,7 +7,6 @@ use think\Db;
 use think\Request;
 use think\Validate;
 
-
 class Common extends Controller
 {
     protected $request; //用来处理客户端传递过来的参数
@@ -15,6 +14,11 @@ class Common extends Controller
     protected $params; //过滤后符合要求的参数
     //控制器下面方法所要接受参数的
     protected $rules = array(
+        'Login' =>array(
+            'login' => array(
+                'code' =>['require', 'alphaDash', 'length' => 32],
+            ),
+        ),
         'HandleWx' => array(
             'getwxlist' => array(
                 'num' => ['number'],
