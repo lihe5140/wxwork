@@ -1,0 +1,19 @@
+<!-- 文章列表 -->
+<block wx:for="{{list}}" wx:key="key" wx:for-item="item">
+  <view bindtap='gomsg' data-index="{{index}}">
+    <!-- 文章发表时间 -->
+    <view class='wite-space'></view>
+    <view class='artical-time'>2019年12月12日</view>
+    <!-- 文章图片、标题、描述 -->
+    <view class='artical-container'>
+      <!-- 文章图片 -->
+      <view class='artical-img-container'>
+        <image class='artical-img' src="/images/640.jpg" mode="center"></image>
+      </view>
+      <!-- 文章标题 -->
+      <view class='artical-title'>{{item.art_title}}</view>
+      <!-- 文章描述 -->
+      <view class='artical-describe'>{{item.art_digest}}</view>
+    </view>
+  </view>
+</block>

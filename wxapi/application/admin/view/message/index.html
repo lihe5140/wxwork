@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>童老师ThinkPHP交流群：484519446</title>
+
+    <meta name="description" content="Dashboard">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!--Basic Styles-->
+    <link href="__PUBLIC__css/bootstrap.css" rel="stylesheet">
+    <link href="__PUBLIC__css/font-awesome.css" rel="stylesheet">
+    <link href="__PUBLIC__css/weather-icons.css" rel="stylesheet">
+
+    <!--Beyond styles-->
+    <link id="beyond-link" href="__PUBLIC__css/beyond.css" rel="stylesheet" type="text/css">
+    <link href="__PUBLIC__css/demo.css" rel="stylesheet">
+    <link href="__PUBLIC__css/typicons.css" rel="stylesheet">
+    <link href="__PUBLIC__css/animate.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/jquery/1.12.3/jquery.js"></script>
+
+</head>
+
+<body>
+    <!-- 头部 -->
+    {include file="common/top"}
+    <!-- /头部 -->
+
+    <div class="main-container container-fluid">
+        <div class="page-container">
+            <!-- Page Sidebar -->
+            {include file="common/left"}
+            <!-- /Page Sidebar -->
+            <!-- Page Content -->
+            <div class="page-content">
+                <!-- Page Breadcrumb -->
+                <div class="page-breadcrumbs">
+                    <ul class="breadcrumb">
+                        <li><a href="#">系统</a></li>
+                        <li class="active">留言管理</li>
+                    </ul>
+                </div>
+                <!-- /Page Breadcrumb -->
+                <!-- Page Body -->
+                <div class="page-body">
+                    <div class="row">
+                        <div class="col-lg-12 col-sm-12 col-xs-12">
+                            <div class="widget">
+                                <div class="widget-body">
+                                    <div class="flip-scroll">
+                                        <table class="table table-bordered table-hover">
+                                            <thead class="">
+                                                <tr>
+                                                    <th class="text-center">序号</th>
+                                                    <th class="text-center">姓名</th>
+                                                    <th class="text-center">内容</th>
+                                                    <th class="text-center">显示</th>
+                                                    <th class="text-center">加精</th>
+                                                    <th class="text-center">置顶</th>
+                                                    <th class="text-center">操作</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {volist name='message' id='message_val' key='k'}
+                                                <tr>
+                                                    <td align="center">{$k}</td>
+                                                    <td align="center">{$message_val.m_name}</td>
+                                                    <td align="center">
+                                                        {$message_val.m_msg|htmlspecialchars_decode|strip_tags|mb_substr=###,0,30,'utf-8'}...
+                                                    </td>
+                                                    <td align="center">
+                                                        <label>
+                                                            <input id="check{$k}" {if
+                                                                condition="$message_val['m_ischeck'] eq 1"
+                                                                }checked="checked" {/if}
+                                                                class="checkbox-slider colored-darkorange"
+                                                                name="m_ischeck" type="checkbox">
+                                                            <span class="text"></span>
+                                                        </label>
+                                                    </td>
+                                                    <td align="center">
+                                                        <label>
+                                                            <input id="top{$k}" {if
+                                                                condition="$message_val['m_istop'] eq 1"
+                                                                }checked="checked" {/if}
+                                                                class="checkbox-slider colored-darkorange"
+                                                                name="m_istop" type="checkbox">
+                                                            <span class="text"></span>
+                                                        </label>
+                                                    </td>
+                                                    <td align="center">
+                                                        <label>
+                                                            <input id="fine{$k}" {if
+                                                                condition="$message_val['m_isfine'] eq 1"
+                                                                }checked="checked" {/if}
+                                                                class="checkbox-slider colored-darkorange"
+                                                                name="m_isfine" type="checkbox">
+                                                            <span class="text"></span>
+                                                        </label>
+                                                    </td>
+                                                    <td align="center">
+                                                        <!-- <a href="{:url('message/view',array('m_id'=>$message_val['m_id']))}"
+                                                            class="btn btn-primary btn-sm shiny">
+                                                            <i class="fa fa-edit viewmsg viewmsg{$message_val.m_id}"></i> 查看
+                                                        </a> -->
+                                                        <a href="javascript:;" class="btn btn-primary btn-sm shiny viewmsg{$message_val.m_id}">
+                                                            <i
+                                                                class="fa fa-edit"></i>
+                                                            查看
+                                                        </a>
+                                                        <a href="javascript:;"
+                                                            class="btn btn-primary btn-sm shiny replymsg{$message_val.m_id}">
+                                                            <i class="fa fa-reply"></i>回复
+                                                        </a>
+                                                        <!-- <a href="javascript:;" onClick="warning('确实要删除吗', '{:url('message/del',array('m_id'=>$message_val['m_id']))}')" class="btn btn-danger btn-sm shiny">
+                                                            <i class="fa fa-trash-o"></i> 删除
+                                                        </a> -->
+                                                    </td>
+                                                </tr>
+                                                <script>
+                                                    var id = "{$message_val['m_id']}";
+                                                    $("#check" + {$k}).click(function () {
+                                                        var check = $(this).is(':checked') ? 1 : 0;
+                                                        $.post("{:url('Message/ischeck')}", {
+                                                            m_id: id,
+                                                            m_ischeck: check
+                                                        })
+                                                    })
+                                                    $("#top" + {$k}).click(function () {
+                                                        var top = $(this).is(':checked') ? 1 : 0;
+                                                        $.post("{:url('Message/istop')}", {
+                                                            m_id: id,
+                                                            m_istop: top
+                                                        })
+                                                    })
+                                                    $("#fine" + {$k}).click(function () {
+                                                        var fine = $(this).is(':checked') ? 1 : 0;
+                                                        $.post("{:url('Message/isfine')}", {
+                                                            m_id: id,
+                                                            m_isfine: fine
+                                                        })
+                                                    })
+                                                    $(".viewmsg"+id).click(function(){
+                                                        OnVideo();
+                                                        $.post("{:url('Message/view')}", {
+                                                            m_id: id
+                                                        },function(data){
+                                                            console.log(data);
+                                                            $(".msgdetails").html(data);
+                                                        })
+                                                    })
+                                                    $(".replymsg"+id).click(function(){
+                                                        OnVideo();
+                                                        $.post("{:url('Message/reply')}", {
+                                                            m_id: id
+                                                            
+                                                        },function(data){
+                                                            console.log(data);
+                                                            $(".msgdetails").html(data);
+                                                        })
+                                                    })
+                                                </script>
+                                                {/volist}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /Page Body -->
+            </div>
+            <!-- /Page Content -->
+        </div>
+    </div>
+    <style>
+        .bgmsg{
+            display: none;
+        }
+        .view-block{
+            width: 700px;
+            height: 400px;
+        }
+    </style>
+    <div class="bgmsg"></div>
+    <div class="view-block">
+        <div class="msgdetails">
+        </div>
+    </div>
+    <script>
+        function OnVideo() {
+            var m_top = ($(window).height() - $(".view-block").height()) / 2;
+            var m_left = ($(window).width() - $(".view-block").width()) / 2;
+            var body = document.body;
+            var top = $(document).scrollTop();
+            var WindowsWidth = $(document).width();
+            var WindowsHeight =$(document).height();
+            $(".bgmsg").css({
+                'width': WindowsWidth,
+                'height':WindowsHeight,
+                'background': '#fbfbfb',
+                'opacity': 0.3,
+                'position':'fixed',
+                'top':0,
+                'left':0,
+                'z-index':999
+            }).show();
+            $(".view-block").css({
+                position: 'fixed',
+                'top': m_top,
+                left: m_left,
+                'z-index': '999999'
+            }).show();
+        }
+    </script>
+    <!--Basic Scripts-->
+    <script src="__PUBLIC__js/bootstrap.js"></script>
+    <!--Beyond Scripts-->
+    <script src="__PUBLIC__js/beyond.js"></script>
+
+
+
+</body>
+
+</html>
