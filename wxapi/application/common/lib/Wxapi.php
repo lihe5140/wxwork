@@ -25,6 +25,7 @@ class Wxapi
      */
     public function GetOpenId($code)
     {
+        
         // 接口地址
         $url="https://api.weixin.qq.com/sns/jscode2session?appid={$this->appid}&secret={$this->appsecret}&js_code={$code}&grant_type=authorization_code";
         $curl = new Curl();

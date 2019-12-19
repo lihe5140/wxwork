@@ -6,9 +6,11 @@ use think\Controller;
 use think\Db;
 use think\Request;
 use think\Validate;
+use app\common\lib\Wxapi;
+
 class Common extends Controller
 {
-    protected $request; //用来处理客户端传递过来的参数
+    protected $req; //用来处理客户端传递过来的参数
     protected $validater; //用来验证数据/参数
     protected $params; //过滤后符合要求的参数
     //控制器下面方法所要接受参数的
@@ -78,8 +80,10 @@ class Common extends Controller
     {
         parent::_initialize();
         $this->req = Request::instance();
+        
         // 验证参数,返回成功过滤后的参数数组
-        dump($this->req->header());
+        // dump($this->req->header());
+
 
         $this->params = $this->checkParams($this->req->param(true));
     }
@@ -101,21 +105,5 @@ class Common extends Controller
         }
         //3. 如果正常，就通过验证
         return $arr;
-    }
-
-    /**
-     * [登陆验证匹配]
-     * @param  [string] $type [用户名类型 phone/email]
-     * @return [json]       [登陆返回信息]
-     */
-    private function matchUserAndPwd($type)
-    {
-        $res = db('admin')->where('username', $this->datas['username'])->where('userpwd', md5($this->datas['userpwd']))->find();
-        if (!empty($res)) {
-            unset($res['userpwd']);
-            return show_msg(1, '登陆成功！', $res, 200);
-        } else {
-            return show_msg(0, '登陆失败！', $res, 200);
-        }
     }
 }

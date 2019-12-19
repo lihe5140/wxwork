@@ -41,10 +41,10 @@ class Aes
             $data = mcrypt_generic($module, $input);
             mcrypt_generic_deinit($module);
             mcrypt_module_close($module);
-            $data = bin2hex($data); //16进制
+            $data = base64_encode($data); //16进制
             return $data;
         }else{
-            return bin2hex(openssl_encrypt($input, 'aes-128-cbc', $this->key, OPENSSL_RAW_DATA, $this->iv));
+            return base64_encode(openssl_encrypt($input, 'aes-128-cbc', $this->key, OPENSSL_RAW_DATA, $this->iv));
             
         }
     }
@@ -72,7 +72,7 @@ class Aes
         if (version_compare(PHP_VERSION, '7.1.0', '<')) {
             $module = mcrypt_module_open(MCRYPT_RIJNDAEL_128, '', MCRYPT_MODE_CBC, $this->iv);
             mcrypt_generic_init($module, $this->key, $this->iv);
-            $encryptedData = hex2bin($sStr);
+            $encryptedData = base64_decode($sStr);
             $encryptedData = mdecrypt_generic($module, $encryptedData);
             $dec_s = strlen($encryptedData);
             $padding = ord($encryptedData[$dec_s - 1]);
@@ -84,7 +84,8 @@ class Aes
             }
             return $decrypted;
         } else {
-            return openssl_decrypt(hex2bin($sStr), 'aes-128-cbc', $this->key, true, $this->iv);
+            return openssl_decrypt(base64_decode($sStr), 'aes-128-cbc', $this->key, true, $this->iv);
         }
     }
 }
+

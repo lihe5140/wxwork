@@ -11,7 +11,7 @@
 use think\Route;
 
 
-Route::post('login/:code','api/login/login');
+Route::post('login','api/login/login');
 Route::post('checktoken','api/login/checktoken');
 
 

@@ -1,8 +1,12 @@
 //app.js
+const app = getApp()
 const TOKEN = 'token'
+const OPENID = 'openid'
 App({
   globalData: {
-    token: ''
+    token: '',
+    openid: '',
+    userInfo: ''
   },
   onLaunch: function() {
     // 1.先从缓冲中取出token
@@ -17,17 +21,18 @@ App({
   check_token(token) {
     console.log('执行了验证token操作')
     wx.request({
-      url: 'http://192.168.1.5:81/checktoken',
+      url: 'http://172.20.0.241:81/checktoken',
       method: 'post',
       header: {
-        token:TOKEN
+        token: token
       },
       success: (res) => {
-        console.log(res)
-        if (!res.data.errCode) {
+        console.log(res.data)
+        if (res.data.status !== 10303) {
           console.log('token有效')
           this.globalData.token = token;
         } else {
+          console.log('token已过期')
           this.login()
         }
       },
@@ -46,7 +51,7 @@ App({
         console.log(code);
         // 2.将code发送给服务器
         wx.request({
-          url: 'http://192.168.1.5:81/login',
+          url: 'http://172.20.0.241:81/login',
           method: 'post',
           data: {
             code
@@ -54,14 +59,26 @@ App({
           success: (res) => {
             // 1.取出token
             console.log(res)
-            const token = res.data;
+            const token = res.data.token;
+            const openid = res.data.openid;
             // 2.将token保存在globalData中
             this.globalData.token = token;
+            this.globalData.openid = openid;
             // 3.进行本地存储
             wx.setStorageSync(TOKEN, token)
+            wx.setStorageSync(OPENID, openid)
+            getUserInfo()
           }
         })
       }
+    })
+  },
+  getUserInfo() {
+    // console.log(e)
+    app.globalData.userInfo = e.detail.userInfo
+    this.setData({
+      userInfo: e.detail.userInfo,
+      hasUserInfo: true
     })
   }
 })
