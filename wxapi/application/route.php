@@ -16,7 +16,7 @@ Route::post('checktoken','api/login/checktoken');
 
 
 // 公众号
-Route::get('handle/[:num]/[:page]', 'api/HandleWx/getwxlist');
+Route::get('handle', 'api/HandleWx/getwxlist');
 Route::post('handle', 'api/HandleWx/addwx');
 Route::put('handle', 'api/HandleWx/updatewx');
 Route::delete('handle', 'api/HandleWx/deletewx');

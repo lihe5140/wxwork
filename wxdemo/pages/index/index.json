@@ -1,3 +1,7 @@
 {
-  "usingComponents": {}
+  "backgroundTextStyle": "light",
+  "navigationBarBackgroundColor": "#2c2d31",
+  "navigationBarTitleText": "小鹿留言助手",
+  "navigationBarTextStyle": "black",
+  "enablePullDownRefresh": true
 }

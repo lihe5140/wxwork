@@ -1,21 +1,41 @@
 // pages/article/article.js
+const app = getApp()
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    list: [],
+    buttonDisabled: false,
+    modalHidden: true,
+    userInfo: {},
+    hasUserInfo: false,
+    //判断小程序的组件在当前版本是否可用
+    canIUse: wx.canIUse('button.open-type.getUserInfo'),
+    num: '',
+    page: '',
+    list: {},
+    art_wxid: '' //公众号id
   },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-    var that = this
+    // var that = this
+    this.setData({
+      art_wxid: options.wx_id
+    })
+    this.getarticlelist()
+  },
+  getarticlelist: function() {
+    var that = this;
     wx.request({
-      url: 'http://172.20.0.241:81/article',
+      url: 'http://192.168.1.5:81/article',
       header: {
         'content-type': 'application/json'
+      },
+      data:{
+        num:'3'
       },
       method: 'get', //上传方式
       success: function(res) {
@@ -29,7 +49,9 @@ Page({
     })
   },
   /*********跳转留言页面 *******/
-  gomsg: function() {
+  gomsg: function (event) {
+    var art_id = event.currentTarget.dataset.id;
+    console.log(art_id)
     wx.navigateTo({
       url: '../message/message'
     })

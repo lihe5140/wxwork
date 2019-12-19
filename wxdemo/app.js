@@ -1,13 +1,13 @@
 //app.js
-const app = getApp()
 const TOKEN = 'token'
 const OPENID = 'openid'
 App({
   globalData: {
     token: '',
     openid: '',
-    userInfo: ''
+    userInfo: null
   },
+
   onLaunch: function() {
     // 1.先从缓冲中取出token
     const token = wx.getStorageSync(TOKEN)
@@ -17,27 +17,50 @@ App({
     } else { // 没有token, 进行登录操作
       this.login()
     }
+    //查看当前用户是否已经授权
+    wx.getSetting({
+      success: res => {
+        if (res.authSetting['scope.userInfo']) {
+          // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
+          wx.getUserInfo({
+            success: res => {
+              // 授权成功后，直接将信息传到全局变量中
+              this.globalData.userInfo = res.userInfo
+              // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
+              // 所以此处加入 callback 以防止这种情况
+              if (this.userInfoReadyCallback) {
+                this.userInfoReadyCallback(res)
+              }
+            }
+          })
+        } else {
+          return;
+        }
+      }
+    })
   },
   check_token(token) {
     console.log('执行了验证token操作')
     wx.request({
-      url: 'http://172.20.0.241:81/checktoken',
+      url: 'http://192.168.1.5:81/checktoken',
       method: 'post',
       header: {
         token: token
       },
       success: (res) => {
-        console.log(res.data)
+        // console.log(res.data)
         if (res.data.status !== 10303) {
-          console.log('token有效')
+          // console.log('token有效')
           this.globalData.token = token;
+          const openid = wx.getStorageSync(OPENID)
+          this.globalData.openid = openid;
         } else {
-          console.log('token已过期')
+          // console.log('token已过期')
           this.login()
         }
       },
       fail: function(err) {
-        console.log(err)
+        // console.log(err)
       }
     })
   },
@@ -48,10 +71,10 @@ App({
       success: (res) => {
         // 1.获取code
         const code = res.code;
-        console.log(code);
+        // console.log(code);
         // 2.将code发送给服务器
         wx.request({
-          url: 'http://172.20.0.241:81/login',
+          url: 'http://192.168.1.5:81/login',
           method: 'post',
           data: {
             code
@@ -67,18 +90,10 @@ App({
             // 3.进行本地存储
             wx.setStorageSync(TOKEN, token)
             wx.setStorageSync(OPENID, openid)
-            getUserInfo()
           }
         })
       }
     })
   },
-  getUserInfo() {
-    // console.log(e)
-    app.globalData.userInfo = e.detail.userInfo
-    this.setData({
-      userInfo: e.detail.userInfo,
-      hasUserInfo: true
-    })
-  }
+
 })
