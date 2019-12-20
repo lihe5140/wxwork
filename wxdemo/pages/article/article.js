@@ -30,12 +30,12 @@ Page({
   getarticlelist: function() {
     var that = this;
     wx.request({
-      url: 'http://192.168.1.5:81/article',
+      url: 'https://wxapi.chaozhiedu.cn/article',
       header: {
         'content-type': 'application/json'
       },
       data:{
-        num:'3'
+        num:'6'
       },
       method: 'get', //上传方式
       success: function(res) {

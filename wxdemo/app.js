@@ -1,15 +1,18 @@
 //app.js
+var utilJS = require("/utils/util.js");
 const TOKEN = 'token'
 const OPENID = 'openid'
+const host = utilJS.host
 App({
   globalData: {
     token: '',
     openid: '',
-    userInfo: null
+    userInfo: null,
+    host:host
   },
-
   onLaunch: function() {
     // 1.先从缓冲中取出token
+    console.log(host)
     const token = wx.getStorageSync(TOKEN)
     // 2.判断token是否有值
     if (token && token.length !== 0) { // 已经有token,验证token是否过期
@@ -42,8 +45,8 @@ App({
   check_token(token) {
     console.log('执行了验证token操作')
     wx.request({
-      url: 'http://192.168.1.5:81/checktoken',
-      method: 'post',
+      url: host+'checktoken',
+      method: 'POST',
       header: {
         token: token
       },
@@ -74,8 +77,8 @@ App({
         // console.log(code);
         // 2.将code发送给服务器
         wx.request({
-          url: 'http://192.168.1.5:81/login',
-          method: 'post',
+          url: host +'login',
+          method: 'POST',
           data: {
             code
           },

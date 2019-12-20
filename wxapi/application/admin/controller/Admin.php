@@ -1,6 +1,6 @@
 <?php
 namespace app\admin\controller;
-use app\admin\Controller\Common;
+use app\admin\controller\Common;
 use think\Db;
 class Admin extends Common{
 

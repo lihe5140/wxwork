@@ -118,14 +118,14 @@ Page({
   getGongInfo: function () {
     var that = this;
     wx.request({
-      url: 'http://192.168.1.5:81/handle', //获取公众号信息
+      url: 'https://wxapi.chaozhiedu.cn/handle', //获取公众号信息
       data: {
 
       },
       header: {
         'content-type': 'application/json' // 数据格式（默认值）
       },
-      method: 'get', //上传方式
+      method: 'GET', //上传方式
       success: function (res) {   //回调成功
         console.log(res.data)
         if (res.statusCode == 200) {

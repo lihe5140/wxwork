@@ -2,7 +2,7 @@
 
 namespace app\admin\controller;
 
-use app\admin\Controller\Common;
+use app\admin\controller\Common;
 
 class Message extends Common
 {

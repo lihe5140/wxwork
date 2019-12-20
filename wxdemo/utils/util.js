@@ -16,7 +16,8 @@ const formatNumber = n => {
 var app = getApp();
 //项目URL相同部分，减轻代码量，同时方便项目迁移
 //这里因为我是本地调试，所以host不规范，实际上应该是你备案的域名信息
-var host = 'http://172.20.0.241:81/';
+// var host = 'http://172.20.0.241:81/';
+const host = "http://172.20.0.241:81/"
 
 /**
  * POST请求，
@@ -69,5 +70,6 @@ function getData(url, doSuccess, doFail) {
 module.exports.request = request;
 module.exports.getData = getData;
 module.exports = {
-  formatTime: formatTime
+  formatTime: formatTime,
+  host: host
 }
