@@ -28,7 +28,7 @@ class Login extends Controller
         $wxapi = new Wxapi();
         $open = $wxapi->GetOpenId($this->req->param('code'));
         $userdata = json_decode($open, true);
-        if(!array_key_exists('errcode',$userdata)){
+        if (!array_key_exists('errcode', $userdata)) {
             $res = Db('user')->where('u_openid', $userdata['openid'])->find();
             if ($res) {
                 $data = array();
@@ -38,20 +38,22 @@ class Login extends Controller
                 $return = array();
                 $return['openid'] = $userdata['openid'];
                 $return['token'] = $data['u_token'];
+                $return['uid'] = $res['u_id'];
                 return json_encode($return);
-            }else{
-                $time=time();
+            } else {
+                $time = time();
                 $data = array();
-                $data['u_openid']=$userdata['openid'];
-                $data['u_token'] = $this->gen_token($userdata['openid'],$time,rand(100000, 999999));
+                $data['u_openid'] = $userdata['openid'];
+                $data['u_token'] = $this->gen_token($userdata['openid'], $time, rand(100000, 999999));
                 $data['u_time'] = $time;
-                Db('user')->insertGetId($data);
+                $uid = Db('user')->insertGetId($data);
                 $return = array();
                 $return['openid'] = $userdata['openid'];
                 $return['token'] = $data['u_token'];
+                $return['uid'] = $uid;
                 return json_encode($return);
             }
-        }else{
+        } else {
             return $open;
         }
     }
@@ -66,13 +68,12 @@ class Login extends Controller
     }
     public function checktoken()
     {
-        $token=$this->req->header('token');
+        $token = $this->req->header('token');
         $aes = new Aes();
         $data = json_decode($aes->decrypt($token), true);
-        // echo time() - intval($data['expire']);
         if (time() - intval($data['expire']) > 7000) {
             return show_msg(10303, "token已过期！", 'errCode', 400);
         }
-        return show_msg(10300,"token可用",'successCode',200);
+        return show_msg(10300, "token可用", 'successCode', 200);
     }
 }

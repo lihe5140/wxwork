@@ -30,3 +30,8 @@ Route::delete('article', 'api/article/delete');
 
 // 留言
 Route::get('msg', 'api/message/getmsg');
+Route::post('msg','api/message/addmsg');
+Route::get('getusermsg','api/message/getusermsg');
+
+// 更新用户信息
+Route::post('checkuserinfo','api/user/checkuserinfo');

@@ -1,5 +1,7 @@
 // pages/article/article.js
 const app = getApp()
+var utilJS = require("../../utils/util.js");
+const host = utilJS.host
 Page({
 
   /**
@@ -30,30 +32,30 @@ Page({
   getarticlelist: function() {
     var that = this;
     wx.request({
-      url: 'https://wxapi.chaozhiedu.cn/article',
+      url: host + 'article',
       header: {
         'content-type': 'application/json'
       },
-      data:{
-        num:'6'
+      data: {
+        num: '6'
       },
       method: 'get', //上传方式
       success: function(res) {
-        console.log(res.data)
-        var posts_content = res.data;
-        console.log(posts_content.data)
         that.setData({
-          list: posts_content.data,
+          list: res.data.data,
         })
       }
     })
   },
   /*********跳转留言页面 *******/
-  gomsg: function (event) {
-    var art_id = event.currentTarget.dataset.id;
-    console.log(art_id)
+  gomsg: function(event) {
+    var index = event.currentTarget.dataset.index;
+    var article_info = this.data.list[index]
+    var art_id = article_info.art_id
+    var art_title = article_info.art_title
+    var art_wxid = article_info.art_wxid
     wx.navigateTo({
-      url: '../message/message'
+      url: '../message/message?art_id=' + art_id + '&art_title=' + art_title + '&art_wxid=' + art_wxid
     })
   },
   /**

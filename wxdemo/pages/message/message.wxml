@@ -3,7 +3,7 @@
     <image bindtap='adddetial'  class="add_icon" src="../../images/主页.png"></image>
   </view> -->
 
-<view class='title-style'>这里是标题</view>
+<view class='title-style'>{{m_artitle}}</view>
 <view wx:if="{{!hasUserInfo && canIUse}}">
   <button class='bottom' wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo">授权后才能查看留言</button>
 </view>
@@ -15,56 +15,52 @@
       <view class='write-message' bindtap='writemessage'>写留言</view>
     </view>
     <view class='message-top'></view>
-    <block wx:for="{{messages}}" wx:key="key" wx:for-item="item" wx:for-index="index">
+    <block wx:for="{{msg}}" wx:key="key" wx:for-item="item" wx:for-index="index">
       <view class='jiange'>
         <!-- 留言内容 作者回复 -->
         <view class='message-content'>
           <!-- 用户头像 -->
           <view class='head-container'>
-            <image class='user-hear-style' src='{{item.headimage}}'></image>
+            <image class='user-hear-style' src='{{item.m_avatar}}'></image>
           </view>
           <!-- 用户名与留言内容 -->
           <view class='username-message'>
             <view class='clumen'>
-              <view class='username'>{{item.username}}</view>
-              <block wx:if="{{isTop[index]}}">
-                <view class='set-top'>置顶</view>
-              </block>
+              <view class='username'>{{item.m_name}}</view>
+              <view class='set-top' hidden="{{item.m_istop==0?true:false}}">置顶</view>
             </view>
             <view>
-              <view class='message'>{{item.userMesContent}}</view>
+              <view class='message'>{{item.m_msg}}</view>
             </view>
           </view>
           <!-- 点赞 -->
-          <block wx:if="{{ishave}}">
-            <view class='ico_zan'>
-              <view wx:if="{{status[index]}}">
-                <image data-index="{{index}}" class='zan' bindtap='setGood' src='../../images/zan1.png'></image>
-              </view>
-              <view wx:else>
-                <image data-index="{{index}}" class='zan' bindtap='setGood' src='../../images/zan2.png'></image>
-              </view>
+          <view class='ico_zan'>
+            <view wx:if="{{status[index]}}">
+              <image data-index="{{index}}" class='zan' bindtap='setGood' src='../../images/zan1.png'></image>
             </view>
-            <!-- 点赞计数 -->
-            <view class='ico_num'>
-              <view wx:if="{{goodarray[index]!=0}}">{{goodarray[index]}}</view>
-              <view wx:else></view>
+            <view wx:else>
+              <image data-index="{{index}}" class='zan' bindtap='setGood' src='../../images/zan2.png'></image>
             </view>
-          </block>
+          </view>
+          <!-- 点赞计数 -->
+          <view class='ico_num'>
+            <view wx:if="{{goodarray[index]!=0}}">{{goodarray[index]}}</view>
+            <view wx:else></view>
+          </view>
         </view>
         <!-- 作者回复 -->
-        <block wx:if="{{authorBool[index]}}">
-          <view>
+        <!-- <block wx:if="{{authorBool[index]}}"> -->
+          <view hidden="{{item.m_isauthmsg==0?true:false}}">
             <!-- 回复图标 -->
             <view class='reply-container'>
               <view class='autor-reply-line'></view>
               <view class='author-text'>作者</view>
             </view>
             <!-- 作者回复内容 -->
-            <view class='reply-message'>{{authormessages[index] }}
+            <view class='reply-message'>{{item.m_authormsg}}
             </view>
           </view>
-        </block>
+        <!-- </block> -->
       </view>
     </block>
   </view>

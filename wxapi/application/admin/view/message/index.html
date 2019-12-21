@@ -123,10 +123,11 @@
                                                     var id = "{$message_val['m_id']}";
                                                     $("#check" + {$k}).click(function () {
                                                         var check = $(this).is(':checked') ? 1 : 0;
-                                                        $.post("{:url('Message/ischeck')}", {
-                                                            m_id: id,
-                                                            m_ischeck: check
-                                                        })
+                                                        console.log(id)
+                                                        // $.post("{:url('Message/ischeck')}", {
+                                                        //     m_id: id,
+                                                        //     m_ischeck: check
+                                                        // })
                                                     })
                                                     $("#top" + {$k}).click(function () {
                                                         var top = $(this).is(':checked') ? 1 : 0;

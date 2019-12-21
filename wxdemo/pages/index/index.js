@@ -1,6 +1,8 @@
 //index.js
 //获取应用实例
 const app = getApp()
+var utilJS = require("../../utils/util.js")
+const host = utilJS.host
 
 Page({
   data: {
@@ -12,18 +14,18 @@ Page({
     gongMessage: [], //存储公众号所有信息
     inputContent: '',
     inputContentxml: '',
-    id:'',
+    id: '',
     // lock: false,
   },
   //事件处理函数 登录日志
   bindViewTap: function() {
     wx.navigateTo({
-      
+
     })
   },
 
   //跳转文章页面
-  to_articel_list: function (event) {
+  to_articel_list: function(event) {
     var that = this;
     var wx_id = event.currentTarget.dataset.id;
     console.log(wx_id)
@@ -34,23 +36,26 @@ Page({
     })
   },
   // 长按复制公众号名称
-  copy: function (event) {
+  copy: function(event) {
     //锁住
-    this.setData({ lock: true });
+    this.setData({
+      lock: true
+    });
     var that = this;
     var index = event.currentTarget.dataset.index;
     console.log(event);
     wx.setClipboardData({
       data: that.data.gongMessage[index].name,
-      success: function (res) {
+      success: function(res) {
         wx.showToast({
           title: '复制成功',
         });
       }
     });
   },
-  onLoad: function () {
+  onLoad: function() {
     var that = this;
+    console.log(app.globalData)
     // 如果获取到用户信息就存储
     if (app.globalData.userInfo) {
       console.log("用户信息存在")
@@ -61,7 +66,7 @@ Page({
       wx.setStorageSync('username', that.data.userInfo.nickName)
       wx.setStorageSync('headpath', that.data.userInfo.avatarUrl)
       // console.log("在index页面全局app1中获取到的用户信息为：" + that.data.userInfo.nickName + " " + that.data.userInfo.avatarUrl);
-    } else if (this.data.canIUse){
+    } else if (this.data.canIUse) {
       // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
       // 所以此处加入 callback 以防止这种情况
       app.userInfoReadyCallback = res => {
@@ -91,12 +96,12 @@ Page({
         },
       })
     }
-   //获取公众号信息
+    //获取公众号信息
     that.getGongInfo();
   },
 
   //点击按钮授权
-  getUserInfo: function (e) {
+  getUserInfo: function(e) {
     var that = this;
     if (e.detail.userInfo) {
       console.log(e)
@@ -115,10 +120,10 @@ Page({
   },
 
   // 获取公众号信息
-  getGongInfo: function () {
+  getGongInfo: function() {
     var that = this;
     wx.request({
-      url: 'https://wxapi.chaozhiedu.cn/handle', //获取公众号信息
+      url: host + 'handle', //获取公众号信息
       data: {
 
       },
@@ -126,8 +131,8 @@ Page({
         'content-type': 'application/json' // 数据格式（默认值）
       },
       method: 'GET', //上传方式
-      success: function (res) {   //回调成功
-        console.log(res.data)
+      success: function(res) { //回调成功
+        console.log(res)
         if (res.statusCode == 200) {
           if (res.data.status == '1') {
             var posts_content = res.data;
@@ -149,7 +154,7 @@ Page({
         }
       },
       //回调失败
-      fail: function (res) {
+      fail: function(res) {
         console.log(res.errMsg)
         wx.showToast({
           title: '联网失败',
@@ -159,14 +164,14 @@ Page({
     })
   },
   //弹出回复框
-  showModal: function (event) {
+  showModal: function(event) {
     this.setData({
       modalHidden: !this.data.modalHidden,
     })
   },
 
   // 获取弹出框密码
-  getInputContent: function (e) {
+  getInputContent: function(e) {
     console.log(e.detail.value)
     this.setData({
       inputContent: e.detail.value
@@ -174,7 +179,7 @@ Page({
   },
 
   //确定
-  modalBindaconfirm: function () {
+  modalBindaconfirm: function() {
     var that = this;
     console.log(that.data.inputContent)
     if (that.data.inputContent == "") {
@@ -187,16 +192,16 @@ Page({
       that.getIdentifyId();
     }
   },
-  
+
   //取消
-  modalBindcancel: function () {
+  modalBindcancel: function() {
     this.setData({
       modalHidden: !this.data.modalHidden,
     })
   },
 
   //通过后台秘钥获取公众号 id
-  getIdentifyId: function () {
+  getIdentifyId: function() {
     var that = this;
     wx.request({
       url: '自己服务器API', //获取公众号信息
@@ -207,22 +212,22 @@ Page({
         'content-type': 'application/json' // 数据格式（默认值）
       },
       method: 'post', //上传方式
-      success: function (res) {   //回调成功
+      success: function(res) { //回调成功
         console.log(res.data)
         if (res.statusCode == 200) {
           if (res.data.result == '1') {
-              //弹出框消失
-              that.setData({
-                modalHidden: !that.data.modalHidden,
-                buttonDisabled: !that.data.buttonDisabled,
-                id: res.data.content[0].id,
-              })
+            //弹出框消失
+            that.setData({
+              modalHidden: !that.data.modalHidden,
+              buttonDisabled: !that.data.buttonDisabled,
+              id: res.data.content[0].id,
+            })
             //上传openid
-              // that.postOpenid();
-             //跳转后台管理界面
-              wx.navigateTo({
-                url: '../../pages/select/select?id=' + that.data.id + "&avatarUrl=" + that.data.userInfo.avatarUrl + "&nickName=" + that.data.userInfo.nickName + "&headpath=" + res.data.content[0].headpath + "&name=" + res.data.content[0].name + "&describe=" + res.data.content[0].describes
-              })
+            // that.postOpenid();
+            //跳转后台管理界面
+            wx.navigateTo({
+              url: '../../pages/select/select?id=' + that.data.id + "&avatarUrl=" + that.data.userInfo.avatarUrl + "&nickName=" + that.data.userInfo.nickName + "&headpath=" + res.data.content[0].headpath + "&name=" + res.data.content[0].name + "&describe=" + res.data.content[0].describes
+            })
           } else {
             wx.showToast({
               title: '你不是管理员或者密码错误',
@@ -237,7 +242,7 @@ Page({
         }
       },
       //回调失败
-      fail: function (res) {
+      fail: function(res) {
         console.log(res.errMsg)
         wx.showToast({
           title: '联网失败',
@@ -248,7 +253,7 @@ Page({
   },
 
   // 上传管理员openid
-  postOpenid: function () {
+  postOpenid: function() {
     var that = this;
     wx.request({
       url: '自己服务器API', //获取公众号信息
@@ -260,7 +265,7 @@ Page({
         'content-type': 'application/json' // 数据格式（默认值）
       },
       method: 'post', //上传方式
-      success: function (res) {   //回调成功
+      success: function(res) { //回调成功
         console.log(res.data.result)
         if (res.statusCode == 200) {
           if (res.data.result == '1') {
@@ -276,7 +281,7 @@ Page({
         }
       },
       //回调失败
-      fail: function (res) {
+      fail: function(res) {
         console.log(res.errMsg)
         wx.showToast({
           title: '联网失败',
@@ -287,20 +292,20 @@ Page({
   },
 
   //下拉刷新
-  onPullDownRefresh: function () {
+  onPullDownRefresh: function() {
     var that = this;
 
     //在标题栏中显示加载图标 
-    wx.showNavigationBarLoading(); 
+    wx.showNavigationBarLoading();
 
     //获取公众号信息
     that.getGongInfo();
 
     //完成停止加载
     wx.hideNavigationBarLoading();
-    
+
     //停止下拉刷新 
-    wx.stopPullDownRefresh();           
+    wx.stopPullDownRefresh();
   },
 
   //wx.showNavigationBarLoading(); //在标题栏中显示加载图标 
@@ -309,7 +314,7 @@ Page({
   // wx.stopPullDownRefresh();            //停止下拉刷新 
 
   //后天切换到前台调用 onShow
-  onShow:function () {
-  
+  onShow: function() {
+
   }
 })

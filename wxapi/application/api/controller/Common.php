@@ -20,7 +20,6 @@ class Common extends Controller
                 'code' => ['require', 'alphaDash', 'length' => 32],
             )
         ),
-        
         'HandleWx' => array(
             'getwxlist' => array(
                 'num' => ['number'],
@@ -61,6 +60,32 @@ class Common extends Controller
                 'm_artid' => 'require|number',
                 'num' => ['number'],
                 'page' => ['number'],
+            ),
+            'addmsg' => array(
+                'm_msg' => ['require', 'min' => 1],
+                'm_artid' => ['require', 'number'],
+                'm_name' => ['require', 'min' => 1],
+                'm_avatar' => ['require', 'min' => 1],
+                'm_wxid' => ['require', 'number'],
+            ),
+            'getusermsg' => array(
+                'm_artid' => 'require|number',
+                'm_uid' => 'require|number',
+            ),
+            'update' => array(
+                'art_id' => ['require', 'number'],
+                'art_wxid' => ['require', 'number'],
+            ),
+            'delete' => array(
+                'art_id' => ['require', 'number']
+            ),
+        ),
+        'User' => array(
+            'checkuserinfo' => array(
+                'u_id' => ['require','number'],
+                'u_openid'=>['require','length' => 18],
+                'u_name'=>['require', 'min' => 1],
+                'u_avatar'=>['require', 'min' => 1]
             ),
             'save' => array(
                 'art_wxid' => 'require|number',

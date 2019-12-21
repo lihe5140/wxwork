@@ -29,9 +29,11 @@ class Message extends Common
         }
         $count = db('message')->count();
         $page_num = ceil($count / $this->datas['num']);
-        // $field = 'art_id,art_title,art_wxid,';
         $join = [['article a', 'a.art_id = m.m_artid']];
-        $res = db('message')->alias('m')->join($join)->page($this->datas['page'], $this->datas['num'])->select();
+        $where = array(
+            // 'm_ischeck'=>1,
+        );
+        $res = db('message')->alias('m')->join($join)->where($where)->page($this->datas['page'], $this->datas['num'])->select();
         if ($res === false) {
             return show_msg(0, '查询失败！', '', 400);
         } else if (empty($res)) {
@@ -49,20 +51,19 @@ class Message extends Common
      * @param String $appsecret
      * @return Json
      */
-    public function save()
+    public function addmsg()
     {
         //接收参数
         $this->datas = $this->params;
-        $this->datas['art_ctime'] = time();
-        $result = db('article')->insertGetId($this->datas);
+        $this->datas['m_time'] = time();
+        $result = db('message')->insertGetId($this->datas);
         //返回执行结果
         if (!empty($result)) {
-            return show_msg(1, '添加文章成功！', $result, 200);
+            return show_msg(1, '留言成功！', $result, 200);
         } else {
-            return show_msg(0, '添加文章失败！', '', 400);
+            return show_msg(0, '留言失败！', '', 400);
         }
     }
-
     public function update()
     {
         $this->datas = $this->params;
@@ -74,6 +75,32 @@ class Message extends Common
             return show_msg(0, '修改文章失败！', '', 400);
         }
     }
+    public function getusermsg()
+    {
+        //1. 接收参数
+        $this->datas = $this->params;
+        //2.检查参数
+        if (!isset($this->datas['m_artid']) || !isset($this->datas['m_uid'])) {
+            return show_msg(0, '查询失败！', '', 400);
+        }
+        if (!isset($this->datas['num'])) {
+            $this->datas['num'] = 10;
+        }
+        if (!isset($this->datas['page'])) {
+            $this->datas['page'] = 1;
+        }
+        $count = db('message')->count();
+        $page_num = ceil($count / $this->datas['num']);
+        $join = [['article a', 'a.art_id = m.m_artid'],['user u','u.u_id=m.m_uid']];
+        $res = db('message')->alias('m')->join($join)->page($this->datas['page'], $this->datas['num'])->select();
+        if ($res === false) {
+            return show_msg(0, '查询失败！', '', 400);
+        } else if (empty($res)) {
+            return show_msg(2, '暂无数据！', null, 200);
+        } else {
+            return show_msg(1, '查询成功！', $res, 200);
+        }
+    }   
     public function delete()
     {
         $this->datas = $this->params;
