@@ -19,7 +19,7 @@ Page({
     m_wxid: '',
     m_name: '',
     m_avatar: '',
-    m_msg: ''
+    m_msg: {}
   },
   /**
    * 生命周期函数--监听页面加载
@@ -32,8 +32,10 @@ Page({
       m_avatar: wx.getStorageSync('headpath'),
       m_artid: options.m_artid,
       m_wxid: options.m_wxid,
+      m_artitle: options.m_artitle
+    }),
+    this.getusermsg()
 
-    })
   },
   //获取留言本文域信息
   getmessages: function(e) {
@@ -77,30 +79,30 @@ Page({
       url: host + 'getusermsg', //获取已精选留言内容
       data: {
         m_artid: that.data.m_artid, //文章ID
-        m_uid: that.data.m_name, //用户名
+        m_uid: wx.getStorageSync('uid')
       },
       header: {
         'content-type': 'application/json' // 数据格式（默认值）
       },
-      method: 'POST', //上传方式
+      method: 'GET', //上传方式
       success: function(res) { //回调成功
         console.log(res)
         if (res.statusCode == 200) {
           if (res.data.status == 1) {
+            
+            wx: wx.showToast({
+              title: '获取留言成功',
+              icon: 'success',
+            })
             that.setData({
               condition: false,
-              m_msg: that.data.m_msg, //留言内容
+              m_msg: res.data.data, //留言内容
               m_name: that.data.m_name, //用户名
               m_avatar: that.data.m_avatar, //用户头像
             })
-            wx: wx.showToast({
-              title: '留言成功',
-              icon: 'success',
-            })
-
           } else {
             wx.showToast({
-              title: '留言失败',
+              title: '获取留言失败',
               icon: 'none',
             })
           }
@@ -135,15 +137,12 @@ Page({
           if (res.data.status == 1) {
             that.setData({
               condition: false,
-              m_msg: that.data.m_msg, //留言内容
-              m_name: that.data.m_name, //用户名
-              m_avatar: that.data.m_avatar, //用户头像
+              m_msg: '' //留言内容
             })
             wx: wx.showToast({
               title: '留言成功',
               icon: 'success',
             })
-
           } else {
             wx.showToast({
               title: '留言失败',

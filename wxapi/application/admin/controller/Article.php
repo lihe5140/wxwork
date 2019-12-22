@@ -6,9 +6,11 @@ class Article extends Common{
 
 	public function index(){
 		$article=Db('article')->alias('a')
-			->join('message m','a.art_id=m.m_artid')
-			->field('a.art_id,a.art_title,a.art_digest,a.art_ctime,count(m.m_artid) as count')
-        	->order('art_id desc')->select();
+			->join('message m','m.m_artid=a.art_id','left')
+			->group('a.art_id')
+			->field('a.art_id,a.art_title,a.art_digest,a.art_ctime,a.art_wxid,count(m.m_artid) as count')
+			->order('art_id desc')
+			->select();
 		$this->assign('article',$article);
 		return $this->fetch('index');
 	}

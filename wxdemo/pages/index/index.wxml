@@ -13,18 +13,18 @@
 </view>
 
 <block wx:else>
-  <view class="remind-copy">长按复制公众号,可以去微信搜索关注</view>
-  <view class='userinfo'>
+  <!-- <view class="remind-copy">长按复制公众号,可以去微信搜索关注</view> -->
+  <!-- <view class='userinfo'>
     <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
     <view>
       <text class="userinfo-nickname">{{userInfo.nickName}}</text>
     </view>
-  </view>
+  </view> -->
   <view class='center-space'></view>
 
   <block wx:for="{{gongMessage}}" wx:for-item="item" wx:key="key">
-    <view class='center-space-gong'></view>
-    公众号信息
+    <!-- <view class='center-space-gong'></view> -->
+    <!-- 公众号信息 -->
     <view class='gong-content' bindtap='to_articel_list' data-id="{{item.wx_id}}" data-index="{{index}}" bindlongtap='copy' bindtouchend="touchend">
       <view>
         <image class='gong-img' src="/images/132.jpg"></image>

@@ -30,14 +30,14 @@
     <view class='submit-messages'>
       <view class='liuyan-text'>我的留言</view>
       <!-- 提交留言相关信息 -->
-        <view class='message-content' hidden="{{condition}}">
+        <view class='message-content' hidden="{{condition}}" wx:for='{{m_msg}}' wx:key="key" wx:for-item="item" >
           <view class='head-container'>
-            <image class='user-hear-style'  src='{{m_avatar}}'></image>
+            <image class='user-hear-style'  src='{{item.m_avatar}}'></image>
           </view>
           <!-- 用户名与留言内容 -->
           <view class='username-message'>
-            <view class='username'>{{m_name}}</view>
-            <view class='message'>{{m_msg}}</view>
+            <view class='username'>{{item.m_name}}</view>
+            <view class='message'>{{item.m_msg}}</view>
             <view class='delete-message' bindtap='deleter_message'>删除</view>
           </view>
         </view>

@@ -22,22 +22,28 @@ class Message extends Common
             return show_msg(0, '查询失败！', '', 400);
         }
         if (!isset($this->datas['num'])) {
-            $this->datas['num'] = 10;
+            $this->datas['num'] = 100;
         }
         if (!isset($this->datas['page'])) {
             $this->datas['page'] = 1;
         }
         $count = db('message')->count();
         $page_num = ceil($count / $this->datas['num']);
-        $join = [['article a', 'a.art_id = m.m_artid']];
+        // $join = [['article a', 'a.art_id = m.m_artid']];
         $where = array(
             // 'm_ischeck'=>1,
+            'm_artid'=>$this->datas['m_artid']
         );
-        $res = db('message')->alias('m')->join($join)->where($where)->page($this->datas['page'], $this->datas['num'])->select();
+        $res = db('message')
+            // ->alias('m')
+            // ->join($join)
+            ->where($where)
+            ->page($this->datas['page'], $this->datas['num'])
+            ->select();
         if ($res === false) {
             return show_msg(0, '查询失败！', '', 400);
         } else if (empty($res)) {
-            return show_msg(2, '暂无数据！', null, 200);
+            return show_msg(1, '暂无数据！', null, 200);
         } else {
             $return_data['article'] = $res;
             $return_data['page_num'] = $page_num;
@@ -96,7 +102,7 @@ class Message extends Common
         if ($res === false) {
             return show_msg(0, '查询失败！', '', 400);
         } else if (empty($res)) {
-            return show_msg(2, '暂无数据！', null, 200);
+            return show_msg(1, '暂无数据！', null, 200);
         } else {
             return show_msg(1, '查询成功！', $res, 200);
         }

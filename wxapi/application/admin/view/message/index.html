@@ -77,7 +77,7 @@
                                                                 }checked="checked" {/if}
                                                                 class="checkbox-slider colored-darkorange"
                                                                 name="m_ischeck" type="checkbox">
-                                                            <span class="text"></span>
+                                                            <span class="text" ></span>
                                                         </label>
                                                     </td>
                                                     <td align="center">
@@ -87,7 +87,7 @@
                                                                 }checked="checked" {/if}
                                                                 class="checkbox-slider colored-darkorange"
                                                                 name="m_istop" type="checkbox">
-                                                            <span class="text"></span>
+                                                            <span class="text" ></span>
                                                         </label>
                                                     </td>
                                                     <td align="center">
@@ -97,7 +97,7 @@
                                                                 }checked="checked" {/if}
                                                                 class="checkbox-slider colored-darkorange"
                                                                 name="m_isfine" type="checkbox">
-                                                            <span class="text"></span>
+                                                            <span class="text" ></span>
                                                         </label>
                                                     </td>
                                                     <td align="center">
@@ -120,42 +120,40 @@
                                                     </td>
                                                 </tr>
                                                 <script>
-                                                    var id = "{$message_val['m_id']}";
                                                     $("#check" + {$k}).click(function () {
                                                         var check = $(this).is(':checked') ? 1 : 0;
-                                                        console.log(id)
-                                                        // $.post("{:url('Message/ischeck')}", {
-                                                        //     m_id: id,
-                                                        //     m_ischeck: check
-                                                        // })
+                                                        $.post("{:url('Message/ischeck')}", {
+                                                            m_id: "{$message_val['m_id']}",
+                                                            m_ischeck: check
+                                                        })
                                                     })
                                                     $("#top" + {$k}).click(function () {
                                                         var top = $(this).is(':checked') ? 1 : 0;
                                                         $.post("{:url('Message/istop')}", {
-                                                            m_id: id,
+                                                            m_id:"{$message_val['m_id']}",
                                                             m_istop: top
                                                         })
                                                     })
                                                     $("#fine" + {$k}).click(function () {
                                                         var fine = $(this).is(':checked') ? 1 : 0;
                                                         $.post("{:url('Message/isfine')}", {
-                                                            m_id: id,
+                                                            m_id: "{$message_val['m_id']}",
                                                             m_isfine: fine
                                                         })
                                                     })
-                                                    $(".viewmsg"+id).click(function(){
+                                                    $(".viewmsg"+"{$message_val['m_id']}").click(function(){
                                                         OnVideo();
                                                         $.post("{:url('Message/view')}", {
-                                                            m_id: id
+                                                            m_id: "{$message_val['m_id']}"
                                                         },function(data){
                                                             console.log(data);
                                                             $(".msgdetails").html(data);
                                                         })
                                                     })
-                                                    $(".replymsg"+id).click(function(){
+                                                    $(".replymsg"+"{$message_val['m_id']}").click(function(){
                                                         OnVideo();
                                                         $.post("{:url('Message/reply')}", {
-                                                            m_id: id
+                                                            m_id: "{$message_val['m_id']}"
                                                             
                                                         },function(data){
                                                             console.log(data);

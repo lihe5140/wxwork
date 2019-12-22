@@ -8,9 +8,9 @@ App({
   globalData: {
     token: '',
     openid: '',
-    uid:'',
+    uid: '',
     userInfo: null,
-    host:host
+    host: host
   },
   onLaunch: function() {
     // 1.先从缓冲中取出token
@@ -46,7 +46,7 @@ App({
   // 验证token
   check_token(token) {
     wx.request({
-      url: host+'checktoken',
+      url: host + 'checktoken',
       method: 'POST',
       header: {
         token: token
@@ -78,7 +78,7 @@ App({
         console.log(code)
         // 2.将code发送给服务器
         wx.request({
-          url: host +'login',
+          url: host + 'login',
           method: 'POST',
           data: {
             code
@@ -102,5 +102,6 @@ App({
       }
     })
   },
-
+  
+  
 })

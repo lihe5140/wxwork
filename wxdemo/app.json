@@ -1,14 +1,14 @@
 {
   "pages": [
-    "pages/article/article",
     "pages/index/index",
     "pages/message/message",
+    "pages/article/article",
     "pages/writemsg/writemsg"
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "WeChat",
+    "navigationBarTitleText": "超职教育",
     "navigationBarTextStyle": "black"
   },
   "style": "v2",

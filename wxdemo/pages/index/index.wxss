@@ -72,7 +72,8 @@ page{
   height: 160rpx;
   display: flex;
   flex-direction: row;
-  padding-left: 10rpx;
+  padding-left: 40rpx;
+  padding-right: 40rpx;
   padding-top: 10rpx;
   vertical-align: middle;
   background-color: #fff;
@@ -94,13 +95,14 @@ page{
 
 /* 公众号名称 */
 .gong-name{
-  font-size: 34rpx;
+  font-size: 28rpx;
+  font-weight: 600;
   font-family: '微软雅黑'；
 }
 
 /* 公众号描述 */
 .gong-describe{
-  font-size: 28rpx;
+  font-size: 25rpx;
   margin-top: 10rpx;
   width: 500rpx;
   /* 超出文本隐藏 */
@@ -140,8 +142,6 @@ page{
   margin-top: 20rpx;
   border: #ccc solid 2rpx;
 }
-
-
 .header {
     margin: 90rpx 0 90rpx 50rpx;
     border-bottom: 1px solid #ccc;

@@ -15,7 +15,6 @@ Page({
     inputContent: '',
     inputContentxml: '',
     id: '',
-    // lock: false,
   },
   //事件处理函数 登录日志
   bindViewTap: function() {
@@ -82,6 +81,7 @@ Page({
     } else {
       console.log("用户信息不存在")
       // 没有获取到用户信息就发起授权窗口
+      // this.getUserInfo
       wx.getUserInfo({
         success: res => {
           // console.log("用户名3：" + res.userInfo.nickName + " " + res.userInfo.avatarUrl)
@@ -92,7 +92,7 @@ Page({
           })
           wx.setStorageSync('username', that.data.userInfo.nickName)
           wx.setStorageSync('headpath', that.data.userInfo.avatarUrl)
-          // console.log("在index页面全局app3中获取到的用户信息为：" + that.data.userInfo.nickName + " " + that.data.userInfo.avatarUrl);
+          console.log("在index页面全局app3中获取到的用户信息为：" + that.data.userInfo.nickName + " " + that.data.userInfo.avatarUrl);
         },
       })
     }
@@ -100,19 +100,19 @@ Page({
     that.getGongInfo();
   },
 
-  //点击按钮授权
-  getUserInfo: function(e) {
+  // 点击按钮授权
+  getUserInfo: function (e) {
     var that = this;
     if (e.detail.userInfo) {
       console.log(e)
       app.globalData.userInfo = e.detail.userInfo
       this.setData({
         userInfo: e.detail.userInfo,
-        hasUserInfo: true
+        hasUserInfo: true,
       })
-      wx.setStorageSync('username', that.data.userInfo.nickName)
-      wx.setStorageSync('headpath', that.data.userInfo.avatarUrl)
-      console.log("在index页面临时授权中获取到的用户信息为：" + that.data.userInfo.nickName + " " + that.data.userInfo.avatarUrl);
+      // wx.setStorageSync('username', that.data.userInfo.nickName)
+      // wx.setStorageSync('headpath', that.data.userInfo.avatarUrl)
+      console.log("在index222页面临时授权中获取到的用户信息为：" + that.data.userInfo.nickName + " " + that.data.userInfo.avatarUrl);
     } else {
       console.log('用户取消授权');
       return;

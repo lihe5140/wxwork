@@ -16,8 +16,30 @@ const formatNumber = n => {
 var app = getApp();
 //项目URL相同部分，减轻代码量，同时方便项目迁移
 //这里因为我是本地调试，所以host不规范，实际上应该是你备案的域名信息
-const host = "http://172.20.0.241:81/"
+// const host = "http://172.20.0.241:81/"
+const host = "http://192.168.1.5:81/"
 // const host = "https://wxapi.chaozhiedu.cn/"
+
+// 检查用户是否更新了头像和昵称
+function checkuserinfo(postData){
+  wx.request({
+    //项目的真正接口，通过字符串拼接方式实现
+    url: host + "checkuserinfo",
+    header: {
+      "content-type": "application/json;charset=UTF-8"
+    },
+    data: postData,
+    method: 'POST',
+    success: function (res) {
+      //参数值为res.data,直接将返回的数据传入
+      console.log(res)
+    },
+    fail: function () {
+      doFail();
+    },
+  })
+}
+
 
 /**
  * POST请求，
@@ -61,6 +83,7 @@ function getData(url, doSuccess, doFail) {
     },
   })
 }
+
 /**
  * module.exports用来导出代码
  * js文件中通过var call = require("../util/request.js") 加载
@@ -69,6 +92,7 @@ function getData(url, doSuccess, doFail) {
  */
 module.exports.request = request;
 module.exports.getData = getData;
+module.exports.checkuserinfo = checkuserinfo;
 module.exports = {
   formatTime: formatTime,
   host: host

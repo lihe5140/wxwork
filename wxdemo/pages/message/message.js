@@ -73,6 +73,7 @@ Page({
         },
       })
     }
+    
   },
   //授权弹窗
   //点击按钮授权
@@ -100,7 +101,6 @@ Page({
       url: host + 'msg', //获取已精选留言内容
       data: {
         m_artid: that.data.m_artid, //文章编号 
-        ischeckmessage: '1', //留言是否经过筛选
         m_wxid: that.data.art_wxid, //公众号 id
         // openid: wx.getStorageSync('openid'), //用户唯一标识
       },
@@ -114,7 +114,7 @@ Page({
           if (res.data.status == 1) {
             var posts_message = res.data.data;
             console.log(posts_message)
-            if (posts_message.length == 0) {
+            if (posts_message == null) {
               wx.showToast({
                 title: '还没有用户留言',
                 icon: 'none',

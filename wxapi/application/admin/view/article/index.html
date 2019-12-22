@@ -17,6 +17,9 @@
     <link href="__PUBLIC__css/demo.css" rel="stylesheet">
     <link href="__PUBLIC__css/typicons.css" rel="stylesheet">
     <link href="__PUBLIC__css/animate.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/jquery/1.12.3/jquery.js"></script>
+    <script src="https://cdn.jsdelivr.net/clipboard.js/1.5.12/clipboard.min.js"></script>
+
 </head>
 
 <body>
@@ -44,6 +47,7 @@
                         onClick="javascript:window.location.href= '{:url('article/add')}'"> <i class="fa fa-plus"></i>
                         Add
                     </button>
+                    <p id="show">复制成功</p>
                     <div class="row">
                         <div class="col-lg-12 col-sm-12 col-xs-12">
                             <div class="widget">
@@ -67,6 +71,10 @@
                                                     <td align="center"><?php echo date("Y-m-d",$article_val['art_ctime']) ; ?></td>
                                                     <td align="center">{$article_val.count}</td>
                                                     <td align="center">
+                                                        <a href="javascript:;" id="url{$k}" onclick="copy({$k})" data-clipboard-text="art_id={$article_val.art_id}&art_title={$article_val.art_title}&art_wxid={$article_val.art_wxid}"
+                                                            class="btn btn-primary btn-sm shiny">
+                                                            <i class="fa fa-eye"></i> 双击复制
+                                                        </a>
                                                         <a href="{:url('message/index',array('m_artid'=>$article_val['art_id']))}"
                                                             class="btn btn-primary btn-sm shiny">
                                                             <i class="fa fa-eye"></i> 查看留言
@@ -81,6 +89,14 @@
                                                             <i class="fa fa-trash-o"></i> 删除
                                                         </a>
                                                     </td>
+                                                    <script>
+                                                        $("#url"+{$k}).click(function(){
+                                                            var clipboard = new Clipboard('#copy_btn'); 
+
+                                                            var url= $(this).attr('title');
+
+                                                        })
+                                                    </script>
                                                 </tr>
                                                 {/volist}
                                             </tbody>
@@ -97,12 +113,20 @@
         </div>
     </div>
     <!--Basic Scripts-->
-    <script src="__PUBLIC__js/jquery_002.js"></script>
     <script src="__PUBLIC__js/bootstrap.js"></script>
-    <script src="__PUBLIC__js/jquery.js"></script>
     <!--Beyond Scripts-->
     <script src="__PUBLIC__js/beyond.js"></script>
-
+    
+    <script>
+        function copy(k){
+            var btn=document.getElementById('url'+k);
+            var clipboard=new Clipboard(btn);
+            clipboard.on('success', function(e){
+                console.log(e)
+                clipboard.destroy()
+            });
+        }
+    </script>
 
 
 </body>
