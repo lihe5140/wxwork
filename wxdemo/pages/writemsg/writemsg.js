@@ -19,7 +19,8 @@ Page({
     m_wxid: '',
     m_name: '',
     m_avatar: '',
-    m_msg: {}
+    m_msg:'',
+    m_msgs: {}
   },
   /**
    * 生命周期函数--监听页面加载
@@ -90,13 +91,13 @@ Page({
         if (res.statusCode == 200) {
           if (res.data.status == 1) {
             
-            wx: wx.showToast({
-              title: '获取留言成功',
-              icon: 'success',
-            })
+            // wx: wx.showToast({
+            //   title: '获取留言成功',
+            //   icon: 'success',
+            // })
             that.setData({
               condition: false,
-              m_msg: res.data.data, //留言内容
+              m_msgs: res.data.data, //留言内容
               m_name: that.data.m_name, //用户名
               m_avatar: that.data.m_avatar, //用户头像
             })
@@ -126,6 +127,7 @@ Page({
         m_name: that.data.m_name, //用户名
         m_avatar: that.data.m_avatar, //用户头像
         m_wxid: that.data.m_wxid, //公众号ID
+        m_uid: wx.getStorageSync('uid')
       },
       header: {
         'content-type': 'application/json' // 数据格式（默认值）
@@ -137,7 +139,8 @@ Page({
           if (res.data.status == 1) {
             that.setData({
               condition: false,
-              m_msg: '' //留言内容
+              m_msg: '' ,//留言内容
+              m_msgs: that.data.m_msgs.concat(that.data)
             })
             wx: wx.showToast({
               title: '留言成功',

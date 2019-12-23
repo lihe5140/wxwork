@@ -27,7 +27,7 @@ class HandleWx extends Common
         }
         $count = db('wxinfos')->count();
         $page_num = ceil($count / $this->datas['num']);
-        $field = 'wx_id,wx_name,wx_digest,wx_ctime';
+        $field = 'wx_id,wx_name,wx_digest,wx_ctime,wx_litpic';
         $res = db('wxinfos')->field($field)->page($this->datas['page'], $this->datas['num'])->select();
         if ($res === false) {
             return show_msg(0, '查询失败！', '', 400);

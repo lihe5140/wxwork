@@ -27,7 +27,7 @@
     <!-- 公众号信息 -->
     <view class='gong-content' bindtap='to_articel_list' data-id="{{item.wx_id}}" data-index="{{index}}" bindlongtap='copy' bindtouchend="touchend">
       <view>
-        <image class='gong-img' src="/images/132.jpg"></image>
+        <image class='gong-img' src="{{item.wx_litpic}}"></image>
       </view>
       <view class='gong-message'>
         <view class='gong-name'>{{item.wx_name}}</view>

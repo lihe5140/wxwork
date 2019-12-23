@@ -31,7 +31,7 @@ class Message extends Common
         $page_num = ceil($count / $this->datas['num']);
         // $join = [['article a', 'a.art_id = m.m_artid']];
         $where = array(
-            // 'm_ischeck'=>1,
+            'm_ischeck'=>1,
             'm_artid'=>$this->datas['m_artid']
         );
         $res = db('message')
@@ -65,7 +65,7 @@ class Message extends Common
         $result = db('message')->insertGetId($this->datas);
         //返回执行结果
         if (!empty($result)) {
-            return show_msg(1, '留言成功！', $result, 200);
+            return show_msg(1, '留言成功！', $this->datas, 200);
         } else {
             return show_msg(0, '留言失败！', '', 400);
         }
@@ -95,10 +95,20 @@ class Message extends Common
         if (!isset($this->datas['page'])) {
             $this->datas['page'] = 1;
         }
-        $count = db('message')->count();
-        $page_num = ceil($count / $this->datas['num']);
-        $join = [['article a', 'a.art_id = m.m_artid'],['user u','u.u_id=m.m_uid']];
-        $res = db('message')->alias('m')->join($join)->page($this->datas['page'], $this->datas['num'])->select();
+        // $count = db('message')->count();
+        // $page_num = ceil($count / $this->datas['num']);
+        // $join = [['article a', 'a.art_id = m.m_artid'],['user u','u.u_id=m.m_uid']];
+        $where = array(
+            // 'm_ischeck'=>1,
+            'm_artid'=>$this->datas['m_artid'],
+            'm_uid' =>$this->datas['m_uid']
+        );
+        $res = db('message')
+        ->alias('m')
+        // ->join($join)
+        ->where($where)
+        ->page($this->datas['page'], $this->datas['num'])
+        ->select();
         if ($res === false) {
             return show_msg(0, '查询失败！', '', 400);
         } else if (empty($res)) {
