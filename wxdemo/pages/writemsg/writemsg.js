@@ -19,7 +19,7 @@ Page({
     m_wxid: '',
     m_name: '',
     m_avatar: '',
-    m_msg:'',
+    m_msg: '',
     m_msgs: {}
   },
   /**
@@ -29,13 +29,13 @@ Page({
     var that = this;
     console.log("填写留言的文章编号为:" + options.m_artid)
     that.setData({
-      m_name: wx.getStorageSync('username'),
-      m_avatar: wx.getStorageSync('headpath'),
-      m_artid: options.m_artid,
-      m_wxid: options.m_wxid,
-      m_artitle: options.m_artitle
-    }),
-    this.getusermsg()
+        m_name: wx.getStorageSync('username'),
+        m_avatar: wx.getStorageSync('headpath'),
+        m_artid: options.m_artid,
+        m_wxid: options.m_wxid,
+        m_artitle: options.m_artitle
+      }),
+      this.getusermsg()
 
   },
   //获取留言本文域信息
@@ -47,9 +47,9 @@ Page({
   //服务推送通知
   orderSign: function(e) {
     var that = this;
-    console.log(e)
+    // console.log(e)
     var fId = e.detail.formId;
-    console.log('formid' + fId)
+    // console.log('formid' + fId)
     that.setData({
       formId: fId
     })
@@ -57,8 +57,9 @@ Page({
   //点击提交留言
   btnmessage: function(e) {
     var that = this;
-    console.log(e)
+    // console.log(e)
     console.log("提交的留言信息为" + that.data.m_msg)
+    // console.log(that.data)
     if (that.data.m_msg == "") {
       wx: wx.showToast({
         title: '请输入留言内容...',
@@ -90,7 +91,7 @@ Page({
         console.log(res)
         if (res.statusCode == 200) {
           if (res.data.status == 1) {
-            
+
             // wx: wx.showToast({
             //   title: '获取留言成功',
             //   icon: 'success',
@@ -120,7 +121,7 @@ Page({
   addmsg: function() {
     var that = this;
     wx.request({
-      url: host + 'msg', //获取已精选留言内容
+      url: host + 'msg',
       data: {
         m_msg: that.data.m_msg, //留言内容
         m_artid: that.data.m_artid, //文章ID
@@ -134,21 +135,71 @@ Page({
       },
       method: 'POST', //上传方式
       success: function(res) { //回调成功
-        console.log(res)
+        // console.log(res)
         if (res.statusCode == 200) {
           if (res.data.status == 1) {
+            console.log(res.data)
+            var msg_res = that.data.m_msgs
+            msg_res.push(res.data.data)
+            console.log(msg_res)
+
             that.setData({
               condition: false,
-              m_msg: '' ,//留言内容
-              m_msgs: that.data.m_msgs.concat(that.data)
+              m_msg: '', //留言内容
+              m_msgs: msg_res
             })
-            wx: wx.showToast({
+            wx.showToast({
               title: '留言成功',
               icon: 'success',
             })
           } else {
             wx.showToast({
               title: '留言失败',
+              icon: 'none',
+            })
+          }
+        } else {
+          wx.showToast({
+            title: '服务器错误',
+            icon: 'none',
+          })
+        }
+      }
+    })
+  },
+  delmsg: function(event) {
+    var that = this;
+    var m_id = event.currentTarget.dataset.id;
+
+    // console.log(this.data.m_msgs)
+    wx.request({
+      url: host + 'msg', //获取已精选留言内容
+      data: {
+        m_id: m_id,
+        // m_uid:wx.getStorageInfoSync('uid')
+      },
+      header: {
+        'content-type': 'application/json' // 数据格式（默认值）
+      },
+      method: 'DELETE', //上传方式
+      success: function(res) { //回调成功
+        console.log(res)
+        if (res.statusCode == 200) {
+          if (res.data.status == 1) {
+            var m_index = event.currentTarget.dataset.index;
+            console.log(m_index)
+            var m_msgs = that.data.m_msgs;
+            m_msgs.splice(m_index, 1)
+            that.setData({
+              m_msgs: m_msgs
+            })
+            wx: wx.showToast({
+              title: '删除成功',
+              icon: 'success',
+            })
+          } else {
+            wx.showToast({
+              title: '删除失败',
               icon: 'none',
             })
           }

@@ -3,8 +3,8 @@
 
 
 return [
-    'appid' => 'wx7ee6285fafc10a0a', //aes加密的密钥  客户端和服务端一致 不能大于16位
-    'appsecret' => 'c45b368918c1ab4db24a8d2ff51102de', //aes加密的向量  客户端和服务端一致 16位
+    'appid' => 'wxbdd86dbace2b5d22', //aes加密的密钥  客户端和服务端一致 不能大于16位
+    'appsecret' => '849e64eb4d5534bf5ef0e82d9b2ee31c', //aes加密的向量  客户端和服务端一致 16位
 
     //app_type配置数组
     'app_types' => [

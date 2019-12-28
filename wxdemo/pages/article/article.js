@@ -23,11 +23,27 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-    // var that = this
-    this.setData({
+    var that = this
+    that.setData({
       art_wxid: options.wx_id
     })
-    this.getarticlelist()
+    wx.request({
+      url: host + 'article',
+      header: {
+        'content-type': 'application/json'
+      },
+      data: {
+        // num: '6',
+        art_wxid: options.wx_id
+      },
+      method: 'GET', //上传方式
+      success: function(res) {
+        console.log(res)
+        that.setData({
+          list: res.data.data,
+        })
+      }
+    })
   },
   getarticlelist: function() {
     var that = this;
@@ -36,10 +52,8 @@ Page({
       header: {
         'content-type': 'application/json'
       },
-      data: {
-        num: '6'
-      },
-      method: 'get', //上传方式
+      data: {},
+      method: 'GET', //上传方式
       success: function(res) {
         that.setData({
           list: res.data.data,
@@ -90,6 +104,52 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function() {
+    wx.showNavigationBarLoading() //在标题栏中显示加载
+    var that = this
+    wx.request({
+      url: host + 'article',
+      header: {
+        'content-type': 'application/json'
+      },
+      data: {
+        // num: '6',
+        art_wxid: that.data.art_wxid
+      },
+      method: 'GET', //上传方式
+      success: function(res) {
+        console.log(res)
+        if (res.statusCode == 200) {
+          if (res.data.status == 1) {
+            that.setData({
+              list: res.data.data,
+            })
+          } else {
+            wx.showToast({
+              title: '作者还没有发表文章哦',
+              icon: 'none',
+            })
+          }
+        } else {
+          wx.showModal({
+            title: '服务器错误',
+            content: 'none',
+          })
+        }
+      },
+      //回调失败
+      fail: function(res) {
+        console.log(res)
+        wx.showToast({
+          title: '联网失败',
+          icon: 'fail',
+        })
+      },
+      complete: function() {
+        wx.hideNavigationBarLoading(); //完成停止加载 
+        // 动态设置导航条标题 
+        wx.stopPullDownRefresh(); //停止下拉刷新 
+      }
+    })
 
   },
 

@@ -26,9 +26,12 @@ class Article extends Common
         }
         $count = db('article')->count();
         $page_num = ceil($count / $this->datas['num']);
-        $field = 'art_id,art_title,art_digest,art_wxid,wx_name,wx_litpic';
+        $where=array(
+            'art_wxid'=>$this->datas['art_wxid']
+        );
+        $field = 'art_id,art_title,art_digest,art_wxid,art_litpic,wx_name,wx_litpic';
         $join = [['wxinfos w', 'w.wx_id = a.art_wxid']];
-        $res = db('article')->alias('a')->field($field)->join($join)->page($this->datas['page'], $this->datas['num'])->select();
+        $res = db('article')->alias('a')->field($field)->join($join)->where($where)->page($this->datas['page'], $this->datas['num'])->select();
         if ($res === false) {
             return show_msg(0, '查询失败！', '', 400);
         } else if (empty($res)) {

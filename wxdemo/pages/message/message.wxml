@@ -5,7 +5,7 @@
 
 <view class='title-style'>{{m_artitle}}</view>
 <view wx:if="{{!hasUserInfo && canIUse}}">
-  <button class='bottom' wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo">授权后才能查看留言</button>
+  <button class='bottom' wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo">授权并查看留言</button>
 </view>
 <block wx:else>
   <view class='messages-container'>
@@ -27,21 +27,21 @@
           <view class='username-message'>
             <view class='clumen'>
               <view class='username'>{{item.m_name}}</view>
-              <view class='set-top' hidden="{{item.m_istop==0?true:false}}">置顶</view>
+              <!-- <view class='set-top' hidden="{{item.m_istop==0?true:false}}">置顶</view> -->
             </view>
             <view>
               <view class='message'>{{item.m_msg}}</view>
             </view>
           </view>
           <!-- 点赞 -->
-          <view class='ico_zan'>
+          <!-- <view class='ico_zan'>
             <view wx:if="{{status[index]}}">
               <image data-index="{{index}}" class='zan' bindtap='setGood' src='../../images/zan1.png'></image>
             </view>
             <view wx:else>
               <image data-index="{{index}}" class='zan' bindtap='setGood' src='../../images/zan2.png'></image>
             </view>
-          </view>
+          </view> -->
           <!-- 点赞计数 -->
           <view class='ico_num'>
             <view wx:if="{{goodarray[index]!=0}}">{{goodarray[index]}}</view>

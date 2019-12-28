@@ -39,6 +39,7 @@ class Common extends Controller
         ),
         'Article' => array(
             'index' => array(
+                'art_wxid'=>['require','number'],
                 'num' => ['number'],
                 'page' => ['number'],
             ),
@@ -72,9 +73,9 @@ class Common extends Controller
                 'm_artid' => 'require|number',
                 'm_uid' => 'require|number',
             ),
-            'update' => array(
-                'art_id' => ['require', 'number'],
-                'art_wxid' => ['require', 'number'],
+            'delmsg' => array(
+                'm_id'=>['require','number'],
+                // 'm_uid' => ['require', 'number']
             ),
             'delete' => array(
                 'art_id' => ['require', 'number']

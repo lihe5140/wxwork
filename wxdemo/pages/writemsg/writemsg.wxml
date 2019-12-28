@@ -30,7 +30,7 @@
     <view class='submit-messages'>
       <view class='liuyan-text'>我的留言</view>
       <!-- 提交留言相关信息 -->
-        <view class='message-content' hidden="{{condition}}" wx:for='{{m_msgs}}' wx:key="key" wx:for-item="item" >
+        <view class='message-content' hidden="{{condition}}" wx:for='{{m_msgs}}'  wx:key="key" wx:for-item="item" >
           <view class='head-container'>
             <image class='user-hear-style'  src='{{item.m_avatar}}'></image>
           </view>
@@ -38,7 +38,7 @@
           <view class='username-message'>
             <view class='username'>{{item.m_name}}</view>
             <view class='message'>{{item.m_msg}}</view>
-            <view class='delete-message' bindtap='deleter_message'>删除</view>
+            <view class='delete-message' bindtap='delmsg' data-id="{{item.m_id}}" data-index='{{index}}' >删除</view>
           </view>
         </view>
     </view>

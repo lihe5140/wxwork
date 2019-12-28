@@ -51,6 +51,15 @@ class Message extends Common
         $this->assign('message', $message);
         return $this->fetch('view');
     }
+    public function authorreturn(){
+        // $id = input('m_id');
+        $data=input("post.");
+        $data['m_isauthormsg']=1;
+        $data['m_authormsgtime']=time();
+        $data['m_ischeck']=1;
+        Db('message')->where('m_id',$data['m_id'])->update($data);
+        
+    }
     // public function del()
     // {
     //     $id = input('id');

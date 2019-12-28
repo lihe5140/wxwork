@@ -13,4 +13,13 @@ class Common extends Controller
             $this->error('请先登录系统！', 'Login/index');
         }
     }
+    public function uploadfilename(){
+
+    	$time=time();
+		$rand=rand(0000,9999);
+		$name=$time+$rand;
+		$name=dechex($name);
+		return $name;
+    }
+    
 }

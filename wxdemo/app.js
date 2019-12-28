@@ -54,12 +54,12 @@ App({
       success: (res) => {
         // console.log(res.data)
         if (res.data.status !== 10303) {
-          // console.log('token有效')
+          console.log('token有效')
           this.globalData.token = token;
           this.globalData.openid = wx.getStorageSync(OPENID)
           this.globalData.uid = wx.getStorageSync(UID)
         } else {
-          // console.log('token已过期')
+          console.log('token已过期')
           this.login()
         }
       },
@@ -75,7 +75,7 @@ App({
       success: (res) => {
         // 1.获取code
         const code = res.code;
-        console.log(code)
+        // console.log(code)
         // 2.将code发送给服务器
         wx.request({
           url: host + 'login',
@@ -85,7 +85,7 @@ App({
           },
           success: (res) => {
             // 1.取出token
-            console.log(res)
+            // console.log(res)
             const token = res.data.token;
             const openid = res.data.openid;
             const uid = res.data.uid;

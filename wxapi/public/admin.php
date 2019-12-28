@@ -13,7 +13,7 @@
 
 // 定义应用目录
 define('APP_PATH', __DIR__ . '/../application/');
-define('SITE_URL', 'http://192.168.1.5:81');
+define('SITE_URL', 'http://172.20.0.241:81');
 require __DIR__ . '/../thinkphp/base.php';  //注意是base.php
 // 绑定当前入口文件到admin模块
 \think\Route::bind('admin');

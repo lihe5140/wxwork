@@ -2,7 +2,7 @@
 
 <view wx:if="{{!hasUserInfo && canIUse}}">
   <view class='header'>
-    <image src='/images/132.jpg'></image>
+    <image src='/images/0.png'></image>
   </view>
   <view class='content'>
     <view>申请获取以下权限</view>
@@ -23,7 +23,7 @@
   <view class='center-space'></view>
 
   <block wx:for="{{gongMessage}}" wx:for-item="item" wx:key="key">
-    <!-- <view class='center-space-gong'></view> -->
+    <view class='center-space-gong'></view>
     <!-- 公众号信息 -->
     <view class='gong-content' bindtap='to_articel_list' data-id="{{item.wx_id}}" data-index="{{index}}" bindlongtap='copy' bindtouchend="touchend">
       <view>

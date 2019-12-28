@@ -54,7 +54,7 @@ Page({
   },
   onLoad: function() {
     var that = this;
-    console.log(app.globalData)
+    // console.log(app.globalData)
     // 如果获取到用户信息就存储
     if (app.globalData.userInfo) {
       console.log("用户信息存在")
@@ -69,7 +69,7 @@ Page({
       // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
       // 所以此处加入 callback 以防止这种情况
       app.userInfoReadyCallback = res => {
-        // console.log("用户名2：" + res.userInfo.nickName + " " + res.userInfo.avatarUrl)
+        // console.log("canIUse用户名2：" + res.userInfo.nickName + " " + res.userInfo.avatarUrl)
         this.setData({
           userInfo: res.userInfo,
           hasUserInfo: true
@@ -81,7 +81,7 @@ Page({
     } else {
       console.log("用户信息不存在")
       // 没有获取到用户信息就发起授权窗口
-      // this.getUserInfo
+      this.getUserInfo
       wx.getUserInfo({
         success: res => {
           // console.log("用户名3：" + res.userInfo.nickName + " " + res.userInfo.avatarUrl)
@@ -92,7 +92,7 @@ Page({
           })
           wx.setStorageSync('username', that.data.userInfo.nickName)
           wx.setStorageSync('headpath', that.data.userInfo.avatarUrl)
-          console.log("在index页面全局app3中获取到的用户信息为：" + that.data.userInfo.nickName + " " + that.data.userInfo.avatarUrl);
+          // console.log("在index页面全局app3中获取到的用户信息为：" + that.data.userInfo.nickName + " " + that.data.userInfo.avatarUrl);
         },
       })
     }
@@ -104,7 +104,7 @@ Page({
   getUserInfo: function (e) {
     var that = this;
     if (e.detail.userInfo) {
-      console.log(e)
+      // console.log(e)
       app.globalData.userInfo = e.detail.userInfo
       this.setData({
         userInfo: e.detail.userInfo,
@@ -112,7 +112,7 @@ Page({
       })
       // wx.setStorageSync('username', that.data.userInfo.nickName)
       // wx.setStorageSync('headpath', that.data.userInfo.avatarUrl)
-      console.log("在index222页面临时授权中获取到的用户信息为：" + that.data.userInfo.nickName + " " + that.data.userInfo.avatarUrl);
+      // console.log("在index222页面临时授权中获取到的用户信息为：" + that.data.userInfo.nickName + " " + that.data.userInfo.avatarUrl);
     } else {
       console.log('用户取消授权');
       return;

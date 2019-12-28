@@ -105,6 +105,7 @@ page {
 .user-hear-style {
   width: 80rpx;
   height: 80rpx;
+  border-radius: 50%
 }
 
 /* 用户名+留言内容 container */

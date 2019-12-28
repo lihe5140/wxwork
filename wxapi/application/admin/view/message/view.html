@@ -35,9 +35,10 @@
                                 <!-- <p style="margin:6px;">{$message.m_authormsg}</p> -->
                             </div>
                         </div>
+                        <input type="hidden" name="m_id" value="{$message.m_id}">
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-2">
-                                <button onClick="javascript:history.back(-1);" class="btn btn-default">确定</button>
+                                <button id="reply" class="btn btn-default">确定</button>
                             </div>
                             <div class="col-sm-offset-2 col-sm-2">
                                 <button onClick="javascript:history.back(-1);" class="btn btn-default">返回</button>
@@ -53,5 +54,14 @@
     $(".close-view").click(function () {
         $(".view-block").hide();
         $(".bgmsg").hide();
+    })
+    $("$reply").click(function () {
+        $.post("{:url('Message/reply')}", {
+            m_id: "{$message_val['m_id']}"
+
+        }, function (data) {
+            console.log(data);
+            $(".msgdetails").html(data);
+        })
     })
 </script>
