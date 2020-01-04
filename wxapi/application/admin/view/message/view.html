@@ -11,11 +11,11 @@
             </style>
             <div class="widget-header bordered-bottom bordered-blue">
                 <span class="widget-caption">查看留言</span>
-                <span class="close-view">X</span>
+                <a href="javascript:;"><span class="close-view guanbi">X</span></a>
             </div>
             <div class="widget-body">
                 <div id="horizontal-form">
-                    <form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
+                    <form class="form-horizontal">
                         <div class="form-group">
                             <label for="username" class="col-sm-2 control-label no-padding-right">姓名</label>
                             <div class="col-sm-8">
@@ -31,7 +31,7 @@
                         <div class="form-group">
                             <label for="condition" class="col-sm-2 control-label no-padding-right">我的回复</label>
                             <div class="col-sm-8">
-                                <textarea name="m_authormsg" class="form-control" id="" cols="30" rows="10"></textarea>
+                                <textarea name="m_authormsg" class="form-control" id="" cols="30" rows="10" style="height:80px;">{$message.m_authormsg}</textarea>
                                 <!-- <p style="margin:6px;">{$message.m_authormsg}</p> -->
                             </div>
                         </div>
@@ -41,7 +41,7 @@
                                 <button id="reply" class="btn btn-default">确定</button>
                             </div>
                             <div class="col-sm-offset-2 col-sm-2">
-                                <button onClick="javascript:history.back(-1);" class="btn btn-default">返回</button>
+                                <button class="guanbi btn btn-default">返回</button>
                             </div>
                         </div>
                     </form>
@@ -51,17 +51,18 @@
     </div>
 </div>
 <script>
-    $(".close-view").click(function () {
+    $(".guanbi").click(function () {
         $(".view-block").hide();
         $(".bgmsg").hide();
     })
-    $("$reply").click(function () {
-        $.post("{:url('Message/reply')}", {
-            m_id: "{$message_val['m_id']}"
-
+    $("#reply").click(function () {
+        var msg=$('textarea[name="m_authormsg"]').val();
+        $.post("{:url('Message/authorreturn')}", {
+            m_id: "{$message['m_id']}",
+            m_authormsg:msg,
         }, function (data) {
             console.log(data);
-            $(".msgdetails").html(data);
+            // $(".msgdetails").html(data);
         })
     })
 </script>

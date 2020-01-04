@@ -52,13 +52,20 @@ class Message extends Common
         return $this->fetch('view');
     }
     public function authorreturn(){
-        // $id = input('m_id');
         $data=input("post.");
-        $data['m_isauthormsg']=1;
-        $data['m_authormsgtime']=time();
-        $data['m_ischeck']=1;
-        Db('message')->where('m_id',$data['m_id'])->update($data);
-        
+        if($data['m_authormsg']!=''){
+            $data['m_isauthmsg']=1;
+            $data['m_authormsgtime']=time();
+            $data['m_ischeck']=1;
+        }else{
+            $data['m_isauthmsg']=0;
+            $data['m_ischeck']=0;
+            $data['m_authormsgtime']=time();
+        }
+        $res=Db('message')->where('m_id',$data['m_id'])->update($data);
+        if($res){
+            return 1;
+        }
     }
     // public function del()
     // {
@@ -69,5 +76,5 @@ class Message extends Common
     //     } else {
     //         $this->error('删除失败！');
     //     }
-    // }
+    // } 
 }

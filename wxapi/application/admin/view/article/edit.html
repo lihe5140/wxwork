@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html><head>
-	    <meta charset="utf-8">
+<html>
+
+<head>
+    <meta charset="utf-8">
     <title>公众号留言管理</title>
 
     <meta name="description" content="Dashboard">
@@ -23,14 +25,15 @@
     <script src="__PUBLIC__js/jquery.js"></script>
     <!--Beyond Scripts-->
 </head>
+
 <body>
-	<!-- 头部 -->
-	{include file="common/top"}
-	<!-- /头部 -->
-	
-	<div class="main-container container-fluid">
-		<div class="page-container">
-			            <!-- Page Sidebar -->
+    <!-- 头部 -->
+    {include file="common/top"}
+    <!-- /头部 -->
+
+    <div class="main-container container-fluid">
+        <div class="page-container">
+            <!-- Page Sidebar -->
             {include file="common/left"}
             <!-- /Page Sidebar -->
             <!-- Page Content -->
@@ -58,37 +61,57 @@
                                 </div>
                                 <div class="widget-body">
                                     <div id="horizontal-form">
-                                        <form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
+                                        <form class="form-horizontal" role="form" action="" method="post"
+                                            enctype="multipart/form-data">
                                             <input type="hidden" value="{$article.art_id}" name="art_id">
                                             <div class="form-group">
-                                            <label for="username" class="col-sm-2 control-label no-padding-right">文章标题</label>
-                                            <div class="col-sm-6">
-                                                <input  class="form-control" id="username" placeholder="" name="art_title" required="" type="text" value="{$article.art_title}">
+                                                <label for="username"
+                                                    class="col-sm-2 control-label no-padding-right">文章标题</label>
+                                                <div class="col-sm-6">
+                                                    <input class="form-control" id="username" placeholder=""
+                                                        name="art_title" required="" type="text"
+                                                        value="{$article.art_title}">
+                                                </div>
+                                                <p class="help-block col-sm-4 red">* 必填</p>
                                             </div>
-                                            <p class="help-block col-sm-4 red">* 必填</p>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="group_id" class="col-sm-2 control-label no-padding-right">文章描述</label>
-                                            <div class="col-sm-6">
-                                                <textarea name="art_digest" class="form-control">{$article.art_digest}</textarea>
+                                            <div class="form-group">
+                                                <label for="group_id"
+                                                    class="col-sm-2 control-label no-padding-right">文章缩略图</label>
+                                                <div class="col-sm-4">
+                                                    <input name="art_litpic" class="form-control" type="file" />
+                                                </div>
+                                                <div class="col-sm-1">
+                                                    <img src="{$article.art_litpic}" alt="" style="width: 100%;">
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="group_id" class="col-sm-2 control-label no-padding-right">文章分类</label>
-                                            <div class="col-sm-6">
-                                                <select name="art_wxid">
-                                                    {volist name='wxinfo' id='wxinfoval'}
-                                                        <option {if condition="$article['art_wxid']==$wxinfoval['wx_id']"} selected{/if} value="{$wxinfoval.wx_id}">{$wxinfoval.wx_name}</option>
-                                                    {/volist}
-                                                </select>
+                                            <div class="form-group">
+                                                <label for="group_id"
+                                                    class="col-sm-2 control-label no-padding-right">文章描述</label>
+                                                <div class="col-sm-6">
+                                                    <textarea name="art_digest"
+                                                        class="form-control">{$article.art_digest}</textarea>
+                                                </div>
                                             </div>
-                                            <p class="help-block col-sm-4 red">* 必填</p>
-                                        </div>
-                                        <div class="form-group">
-                                            <div class="col-sm-offset-2 col-sm-10">
-                                                <button type="submit" class="btn btn-default">确认修改</button>
+                                            <div class="form-group">
+                                                <label for="group_id"
+                                                    class="col-sm-2 control-label no-padding-right">文章分类</label>
+                                                <div class="col-sm-6">
+                                                    <select name="art_wxid">
+                                                        {volist name='wxinfo' id='wxinfoval'}
+                                                        <option {if
+                                                            condition="$article['art_wxid']==$wxinfoval['wx_id']" }
+                                                            selected{/if} value="{$wxinfoval.wx_id}">
+                                                            {$wxinfoval.wx_name}</option>
+                                                        {/volist}
+                                                    </select>
+                                                </div>
+                                                <p class="help-block col-sm-4 red">* 必填</p>
                                             </div>
-                                        </div>
+                                            <div class="form-group">
+                                                <div class="col-sm-offset-2 col-sm-10">
+                                                    <button type="submit" class="btn btn-default">确认修改</button>
+                                                </div>
+                                            </div>
                                         </form>
                                     </div>
                                 </div>
@@ -99,7 +122,9 @@
                 <!-- /Page Body -->
             </div>
             <!-- /Page Content -->
-		</div>	
-	</div>
+        </div>
+    </div>
 
-</body></html>
+</body>
+
+</html>

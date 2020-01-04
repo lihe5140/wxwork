@@ -7,8 +7,9 @@ class Article extends Common{
 	public function index(){
 		$article=Db('article')->alias('a')
 			->join('message m','m.m_artid=a.art_id','left')
+			->join('wxinfos w','w.wx_id=a.art_wxid')
 			->group('a.art_id')
-			->field('a.art_id,a.art_title,a.art_digest,a.art_litpic,a.art_ctime,a.art_wxid,count(m.m_artid) as count')
+			->field('a.art_id,a.art_title,a.art_digest,a.art_litpic,a.art_ctime,w.wx_name,a.art_wxid,count(m.m_artid) as count')
 			->order('art_id desc')
 			->select();
 		$this->assign('article',$article);
@@ -52,6 +53,16 @@ class Article extends Common{
                 'art_digest'=>input('art_digest'),
                 'art_wxid'=>input('art_wxid'),
 			];
+			$name = action('uploadfilename');
+			$file = request()->file('art_litpic');
+			if(!empty($file)){
+				$info = $file->rule('uniqid')->move(ROOT_PATH . 'public' . DS . 'static/uploads/' . date("Ymd"), $name);
+				if ($info) {
+					$data['art_litpic'] = SITE_URL . '/static/uploads/' . date("Ymd") . "/" . $info->getSaveName();
+				} else {
+					$this->error($file->getError());
+				}
+			}
 			$save=Db('article')->update($data);
 			if($save){
 				$this->success('修改成功！','article/index');

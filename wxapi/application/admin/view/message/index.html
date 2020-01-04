@@ -57,7 +57,7 @@
                                                     <th class="text-center">姓名</th>
                                                     <th class="text-center">内容</th>
                                                     <th class="text-center">显示</th>
-                                                    <th class="text-center">加精</th>
+                                                    <th class="text-center">是否回复</th>
                                                     <th class="text-center">置顶</th>
                                                     <th class="text-center">操作</th>
                                                 </tr>
@@ -81,22 +81,13 @@
                                                         </label>
                                                     </td>
                                                     <td align="center">
-                                                        <label>
-                                                            <input id="top{$k}" {if
-                                                                condition="$message_val['m_istop'] eq 1"
-                                                                }checked="checked" {/if}
-                                                                class="checkbox-slider colored-darkorange"
-                                                                name="m_istop" type="checkbox">
-                                                            <span class="text" ></span>
-                                                        </label>
+                                                        {if condition="$message_val['m_isauthmsg'] eq 1"}已回复{/if}
                                                     </td>
                                                     <td align="center">
                                                         <label>
-                                                            <input id="fine{$k}" {if
-                                                                condition="$message_val['m_isfine'] eq 1"
-                                                                }checked="checked" {/if}
+                                                            <input id="top{$k}" {if condition="$message_val['m_istop'] eq 1"}checked="checked" {/if}
                                                                 class="checkbox-slider colored-darkorange"
-                                                                name="m_isfine" type="checkbox">
+                                                                name="m_istop" type="checkbox">
                                                             <span class="text" ></span>
                                                         </label>
                                                     </td>
@@ -106,13 +97,8 @@
                                                             <i class="fa fa-edit viewmsg viewmsg{$message_val.m_id}"></i> 查看
                                                         </a> -->
                                                         <a href="javascript:;" class="btn btn-primary btn-sm shiny viewmsg{$message_val.m_id}">
-                                                            <i
-                                                                class="fa fa-edit"></i>
-                                                            查看
-                                                        </a>
-                                                        <a href="javascript:;"
-                                                            class="btn btn-primary btn-sm shiny replymsg{$message_val.m_id}">
-                                                            <i class="fa fa-reply"></i>回复
+                                                            <i class="fa fa-edit"></i>
+                                                            查看/回复
                                                         </a>
                                                         <!-- <a href="javascript:;" onClick="warning('确实要删除吗', '{:url('message/del',array('m_id'=>$message_val['m_id']))}')" class="btn btn-danger btn-sm shiny">
                                                             <i class="fa fa-trash-o"></i> 删除
@@ -141,22 +127,11 @@
                                                             m_isfine: fine
                                                         })
                                                     })
-                                                    $(".viewmsg"+"{$message_val['m_id']}").click(function(){
+                                                    $(".viewmsg"+{$message_val['m_id']}).click(function(){
                                                         OnVideo();
                                                         $.post("{:url('Message/view')}", {
                                                             m_id: "{$message_val['m_id']}"
                                                         },function(data){
-                                                            console.log(data);
-                                                            $(".msgdetails").html(data);
-                                                        })
-                                                    })
-                                                    $(".replymsg"+"{$message_val['m_id']}").click(function(){
-                                                        OnVideo();
-                                                        $.post("{:url('Message/reply')}", {
-                                                            m_id: "{$message_val['m_id']}"
-                                                            
-                                                        },function(data){
-                                                            console.log(data);
                                                             $(".msgdetails").html(data);
                                                         })
                                                     })
@@ -178,6 +153,13 @@
     <style>
         .bgmsg{
             display: none;
+            height: 100%;
+            background: #333;
+            opacity: 0.3;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 999;
         }
         .view-block{
             width: 700px;
@@ -197,24 +179,24 @@
             var top = $(document).scrollTop();
             var WindowsWidth = $(document).width();
             var WindowsHeight =$(document).height();
-            $(".bgmsg").css({
-                'width': WindowsWidth,
-                'height':WindowsHeight,
-                'background': '#fbfbfb',
-                'opacity': 0.3,
+            $(body).css({
+                'width': WindowsWidth+"px",
+                'height':"100%",
+                'overfollow':'hidden',
                 'position':'fixed',
-                'top':0,
+                'top':'-'+top,
                 'left':0,
-                'z-index':999
-            }).show();
+            });
+            $(".bgmsg").css({width:WindowsWidth}).show();
             $(".view-block").css({
                 position: 'fixed',
                 'top': m_top,
-                left: m_left,
-                'z-index': '999999'
+                'left': m_left,
+                'z-index': '999999999'
             }).show();
         }
     </script>
+
     <!--Basic Scripts-->
     <script src="__PUBLIC__js/bootstrap.js"></script>
     <!--Beyond Scripts-->
