@@ -5,7 +5,7 @@
 	},
 	"setting": {
 		"urlCheck": false,
-		"es6": true,
+		"es6": false,
 		"postcss": true,
 		"minified": true,
 		"newFeature": true,
@@ -60,7 +60,7 @@
 					"id": 0,
 					"name": "pages/message/message",
 					"pathName": "pages/message/message",
-					"query": "art_id=4&art_title= 测试简介&art_wxid=1",
+					"query": "art_id=15&art_title=生个二胎，还要经过老大批准，这届孩子反了天了？&art_wxid=11",
 					"scene": null
 				}
 			]

@@ -33,5 +33,9 @@ Route::get('msg', 'api/message/getmsg');
 Route::post('msg','api/message/addmsg');
 Route::get('getusermsg','api/message/getusermsg');
 Route::delete('msg','api/message/delmsg');
+
+Route::post('zan','api/message/zan');
+
+
 // 更新用户信息
 Route::post('checkuserinfo','api/user/checkuserinfo');

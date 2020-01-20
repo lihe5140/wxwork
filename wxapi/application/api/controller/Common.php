@@ -59,6 +59,7 @@ class Common extends Controller
         'Message' => array(
             'getmsg' => array(
                 'm_artid' => 'require|number',
+                'z_uid'=>'require|number',
                 'num' => ['number'],
                 'page' => ['number'],
             ),
@@ -75,11 +76,11 @@ class Common extends Controller
             ),
             'delmsg' => array(
                 'm_id'=>['require','number'],
-                // 'm_uid' => ['require', 'number']
             ),
-            'delete' => array(
-                'art_id' => ['require', 'number']
-            ),
+            'zan' =>array(
+                'z_mid' => 'require|number',
+                'z_uid' => 'require|number',
+            )
         ),
         'User' => array(
             'checkuserinfo' => array(
@@ -101,6 +102,7 @@ class Common extends Controller
                 'art_id' => ['require', 'number']
             ),
         ),
+        
     );
     protected function _initialize()
     {
@@ -109,8 +111,6 @@ class Common extends Controller
         
         // 验证参数,返回成功过滤后的参数数组
         // dump($this->req->header());
-
-
         $this->params = $this->checkParams($this->req->param(true));
     }
 

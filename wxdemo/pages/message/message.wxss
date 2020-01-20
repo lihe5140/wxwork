@@ -125,7 +125,7 @@ page {
 
 .ico_zan {
   width: 120rpx;
-  padding-top: 7rpx;
+  /* padding-top: 7rpx; */
 }
 
 /* 点赞数 */
@@ -133,8 +133,8 @@ page {
 .ico_num {
   width: 40rpx;
   padding-right: 25rpx;
-  font-size: 34rpx;
-  padding-top: 2rpx;
+  font-size: 30rpx;
+  /* padding-top: 2rpx; */
   color: #6688b8;
 }
 

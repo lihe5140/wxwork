@@ -29,16 +29,16 @@ class Message extends Common
         }
         $count = db('message')->count();
         $page_num = ceil($count / $this->datas['num']);
+        // $join = [['article a', 'a.art_id = m.m_artid']];
         $where = array(
-            'm_ischeck' => 1,
-            'm_artid' => $this->datas['m_artid'],
+            'm_ischeck'=>1,
+            'm_artid'=>$this->datas['m_artid']
         );
         $res = db('message')
-            ->alias('m')
-            ->join('zan z', 'z.z_mid=m.m_id and z_status = 1 and z_uid='.$this->datas['z_uid'], 'left')
-            ->group('m.m_id')
-            ->field('m.*,count(z_id) as iszan')
+            // ->alias('m')
+            // ->join($join)
             ->where($where)
+            ->page($this->datas['page'], $this->datas['num'])
             ->select();
         if ($res === false) {
             return show_msg(0, '查询失败！', '', 400);
@@ -65,7 +65,7 @@ class Message extends Common
         $result = db('message')->insertGetId($this->datas);
         //返回执行结果
         if (!empty($result)) {
-            $this->datas['m_id'] = $result;
+            $this->datas['m_id']=$result;
             return show_msg(1, '留言成功！', $this->datas, 200);
         } else {
             return show_msg(0, '留言失败！', '', 400);
@@ -95,16 +95,20 @@ class Message extends Common
         if (!isset($this->datas['page'])) {
             $this->datas['page'] = 1;
         }
+        // $count = db('message')->count();
+        // $page_num = ceil($count / $this->datas['num']);
+        // $join = [['article a', 'a.art_id = m.m_artid'],['user u','u.u_id=m.m_uid']];
         $where = array(
-            'm_artid' => $this->datas['m_artid'],
-            'm_uid' => $this->datas['m_uid']
+            // 'm_ischeck'=>1,
+            'm_artid'=>$this->datas['m_artid'],
+            'm_uid' =>$this->datas['m_uid']
         );
         $res = db('message')
-            ->alias('m')
-            // ->join($join)
-            ->where($where)
-            ->page($this->datas['page'], $this->datas['num'])
-            ->select();
+        ->alias('m')
+        // ->join($join)
+        ->where($where)
+        ->page($this->datas['page'], $this->datas['num'])
+        ->select();
         if ($res === false) {
             return show_msg(0, '查询失败！', '', 400);
         } else if (empty($res)) {
@@ -112,12 +116,12 @@ class Message extends Common
         } else {
             return show_msg(1, '查询成功！', $res, 200);
         }
-    }
+    }   
     public function delmsg()
     {
         $this->datas = $this->params;
-        $where = array(
-            'm_id' => $this->datas['m_id'],
+        $where=array(
+            'm_id'=>$this->datas['m_id'],
             // 'm_uid'=>$this->datas['m_uid'],
         );
         $res = db('message')->where($where)->delete();
@@ -127,28 +131,4 @@ class Message extends Common
             return show_msg(0, '删除文章失败！', '', 400);
         }
     }
-    public function zan(){
-        $this->datas=$this->params;
-        $res=db('zan')->where(['z_mid'=>$this->datas['z_mid'],'z_uid'=>$this->datas['z_uid']])->find();
-        $mes=db('message')->where(['m_id'=>$this->datas['z_mid']])->find();
-        if($res){
-            $updatecount['m_goodnum']=$res['z_status']==1?$mes['m_goodnum']-1:$mes['m_goodnum']+1;
-            $status=$res['z_status']==1?0:1;
-            $this->datas['z_status']=$status;
-            $result=db('zan')->where(['z_id'=>$res['z_id']])->update($this->datas);
-            $good_result=db('message')->where(['m_id'=>$this->datas['z_mid']])->update($updatecount);
-            return show_msg(1, '操作成功！', $status, 200);
-        }else{
-            $this->datas['z_status']=1;
-            $this->datas['z_ctime']=time();
-            $updatecount['m_goodnum']=$mes['m_goodnum']+1;
-            $result=db('zan')->insert($this->datas);
-            $good_result=db('message')->where(['m_id'=>$this->datas['z_mid']])->update($updatecount);
-            return show_msg(1, '操作成功！', 1, 200);
-        }
-        if(!$result || !$good_result){
-            return show_msg(0, '操作失败！', '', 400);
-        }
-    }
-
 }

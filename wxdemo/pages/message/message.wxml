@@ -34,17 +34,17 @@
             </view>
           </view>
           <!-- 点赞 -->
-          <!-- <view class='ico_zan'>
-            <view wx:if="{{status[index]}}">
-              <image data-index="{{index}}" class='zan' bindtap='setGood' src='../../images/zan1.png'></image>
+          <view class='ico_zan'>
+            <view wx:if="{{item.iszan == 0}}">
+              <image class='zan' bindtap='setGood' data-mid='{{item.m_id}}' data-id='{{item.z_id}}' src='../../images/zan1.png'></image>
             </view>
             <view wx:else>
-              <image data-index="{{index}}" class='zan' bindtap='setGood' src='../../images/zan2.png'></image>
+              <image class='zan' bindtap='setGood' data-mid='{{item.m_id}}' data-id='{{item.z_id}}' src='../../images/zan2.png'></image>
             </view>
-          </view> -->
+          </view>
           <!-- 点赞计数 -->
           <view class='ico_num'>
-            <view wx:if="{{goodarray[index]!=0}}">{{goodarray[index]}}</view>
+            <view wx:if="{{item.m_goodnum!=0}}">{{item.m_goodnum}}</view>
             <view wx:else></view>
           </view>
         </view>

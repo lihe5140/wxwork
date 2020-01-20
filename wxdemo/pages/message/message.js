@@ -10,14 +10,20 @@ Page({
   data: {
     buttonDisabled: false,
     modalHidden: true,
-    userInfo: {},
+    userInfo: {
+
+    },
     hasUserInfo: false,
     //判断小程序的组件在当前版本是否可用
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
+    uid: '',
     m_artid: '',
     m_artitle: '',
     m_wxid: '',
-    m_msg: {}
+    m_msg: {},
+    status: false,
+    m_goodnum: '',
+    checkLogin: false,
   },
 
   /**
@@ -25,20 +31,40 @@ Page({
    */
   onLoad: function(options) {
     var that = this;
-    console.log("留言页面的文章编号为:" + options.art_id)
+    // console.log("留言页面的文章编号为:" + options.art_id)
+    // console.log(app.globalData.uid)
     that.setData({
       m_artid: options.art_id,
       m_artitle: options.art_title,
       m_wxid: options.art_wxid
     })
-    //获取已精选留言内容
-    that.getChooseCotent()
+    if (app.globalData.uid) {
+      console.log("获取到全局变量uid")
+      that.setData({
+        uid: app.globalData.uid,
+      })
+      // console.log(that.data)
+      //获取已精选留言内容
+      that.getChooseCotent()
+    } else {
+      console.log("没有获取到全局变量uid")
+      app.uidReadyCallback = res => {
+        // console.log(res)
+        // console.log(res.data.uid)
+        that.setData({
+          uid: res.data.uid,
+        })
+        // console.log(that.data)
+        that.getChooseCotent()
+      }
+    }
+    // console.log(app.globalData)
     // 如果获取到用户信息就存储
     if (app.globalData.userInfo) {
       console.log("用户信息存在")
       this.setData({
         userInfo: app.globalData.userInfo,
-        hasUserInfo: true
+        hasUserInfo: true,
       })
       wx.setStorageSync('username', that.data.userInfo.nickName)
       wx.setStorageSync('headpath', that.data.userInfo.avatarUrl)
@@ -50,7 +76,7 @@ Page({
         // console.log("用户名2：" + res.userInfo.nickName + " " + res.userInfo.avatarUrl)
         this.setData({
           userInfo: res.userInfo,
-          hasUserInfo: true
+          hasUserInfo: true,
         })
         wx.setStorageSync('username', that.data.userInfo.nickName)
         wx.setStorageSync('headpath', that.data.userInfo.avatarUrl)
@@ -65,7 +91,7 @@ Page({
           app.globalData.userInfo = res.userInfo
           this.setData({
             userInfo: res.userInfo,
-            hasUserInfo: true
+            hasUserInfo: true,
           })
           wx.setStorageSync('username', that.data.userInfo.nickName)
           wx.setStorageSync('headpath', that.data.userInfo.avatarUrl)
@@ -73,22 +99,21 @@ Page({
         },
       })
     }
-
   },
   //授权弹窗
   //点击按钮授权
   getUserInfo: function(e) {
     var that = this;
     if (e.detail.userInfo) {
-      console.log(e)
+      // console.log(e)
       app.globalData.userInfo = e.detail.userInfo
       this.setData({
         userInfo: e.detail.userInfo,
-        hasUserInfo: true
+        hasUserInfo: true,
       })
       wx.setStorageSync('username', that.data.userInfo.nickName)
       wx.setStorageSync('headpath', that.data.userInfo.avatarUrl)
-      console.log("在index页面临时授权中获取到的用户信息为：" + that.data.userInfo.nickName + " " + that.data.userInfo.avatarUrl);
+      // console.log("在index页面临时授权中获取到的用户信息为：" + that.data.userInfo.nickName + " " + that.data.userInfo.avatarUrl);
     } else {
       console.log('用户取消授权');
       return;
@@ -101,19 +126,20 @@ Page({
       url: host + 'msg', //获取已精选留言内容
       data: {
         m_artid: that.data.m_artid, //文章编号 
-        m_wxid: that.data.art_wxid, //公众号 id
+        // m_wxid: that.data.art_wxid, //公众号 id
+        z_uid: app.globalData.uid,
         // openid: wx.getStorageSync('openid'), //用户唯一标识
       },
       header: {
         'content-type': 'application/json' // 数据格式（默认值）
       },
-      method: 'GET', //上传方式
+      method: 'get', //上传方式
       success: function(res) { //回调成功
-        console.log(res.data)
+        // console.log(res.data)
         if (res.statusCode == 200) {
           if (res.data.status == 1) {
             var posts_message = res.data.data;
-            console.log(posts_message)
+            // console.log(posts_message)
             if (posts_message == null) {
               wx.showToast({
                 title: '还没有用户留言',
@@ -121,7 +147,8 @@ Page({
               })
             } else {
               that.setData({
-                msg: posts_message
+                msg: posts_message,
+                uid: app.globalData.uid
               })
             }
           } else {
@@ -150,6 +177,53 @@ Page({
   writemessage: function() {
     wx.navigateTo({
       url: '../writemsg/writemsg?m_artid=' + this.data.m_artid + '&m_wxid=' + this.data.m_wxid + '&m_artitle=' + this.data.m_artitle
+    })
+  },
+  setGood: function(event) {
+    // console.log('点赞')
+    var m_id = event.currentTarget.dataset.mid;
+    // console.log(m_id)
+    var that = this;
+    wx.request({
+      url: host + 'zan', //获取已精选留言内容
+      data: {
+        z_uid: app.globalData.uid,
+        z_mid: m_id,
+      },
+      header: {
+        'content-type': 'application/json' // 数据格式（默认值）
+      },
+      method: 'POST', //上传方式
+      success: function(res) { //回调成功
+        // console.log(res)
+        if (res.statusCode == 200) {
+          that.getChooseCotent();
+          // if (res.data.status == 1) {
+          //   wx: wx.showToast({
+          //     title: '点赞成功',
+          //     icon: 'success',
+          //   })
+          // } else {
+          //   wx.showToast({
+          //     title: '点赞失败',
+          //     icon: 'none',
+          //   })
+          // }
+        } else {
+          wx.showToast({
+            title: '服务器错误',
+            icon: 'none',
+          })
+        }
+      },
+      //回调失败
+      fail: function(res) {
+        console.log(res)
+        wx.showToast({
+          title: '联网失败',
+          icon: 'fail',
+        })
+      },
     })
   },
 
@@ -194,8 +268,8 @@ Page({
     wx.hideNavigationBarLoading();
 
     //停止下拉刷新 
-    wx.stopPullDownRefresh();    
-   
+    wx.stopPullDownRefresh();
+
   },
 
   /**
